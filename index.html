@@ -22,11 +22,8 @@
   --muted2:#93a0d7;
 
   --gold:#f5d37b;
-  --gold2:#b18b3d;
 
-  --red:#ff2d2d;   /* rojo brillante */
-  --red2:#ff4b4b;
-
+  --red:#ff2d2d;
   --wa:#25D366;
 
   --shadow: 0 18px 60px rgba(0,0,0,.55);
@@ -55,7 +52,7 @@ body{
 .fx{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.75;}
 .fx canvas{width:100%; height:100%; display:block}
 
-.container{max-width:var(--maxw); margin:18px auto 96px; padding:0 12px;}
+.container{max-width:var(--maxw); margin:14px auto 96px; padding:0 12px;}
 .shell{
   border:1px solid var(--border);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -64,10 +61,10 @@ body{
   overflow:hidden;
 }
 
-/* Header */
+/* ===================== HEADER (UNA LÍNEA) ===================== */
 .topbar{
-  display:flex; align-items:center; gap:12px;
-  padding: 14px 14px;
+  display:flex; align-items:center; gap:10px;
+  padding: 10px 12px;
   border-bottom: 1px solid rgba(255,255,255,.08);
   background:
     radial-gradient(120% 120% at 10% 0%, rgba(255,45,45,.22), transparent 55%),
@@ -76,68 +73,72 @@ body{
   backdrop-filter: blur(12px);
 }
 
-.brand{display:flex; align-items:center; gap:10px; min-width: 220px;}
+/* Logo más visible */
 .logo{
-  width:56px; height:46px;
-  border-radius: 16px;
-  border:1px solid rgba(255,255,255,.12);
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  box-shadow: 0 12px 35px rgba(0,0,0,.35);
+  width:64px; height:44px;  /* + grande */
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.20);
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
   overflow:hidden;
   display:flex; align-items:center; justify-content:center;
+  flex: 0 0 auto;
 }
-.logo img,.logo svg{width:100%; height:100%; object-fit:contain; padding:7px; display:block;}
-.brandTxt{line-height:1.05}
-.brandTxt b{display:block; letter-spacing:.7px; font-size:14px}
-.brandTxt span{display:block; color:var(--muted2); font-size:12px; letter-spacing:.18em; text-transform:uppercase}
+.logo img{
+  width:100%; height:100%;
+  object-fit:contain;
+  padding:4px; /* menos padding, se ve mejor */
+  display:block;
+}
+.logoFallback{
+  display:none;
+  font-weight:1000;
+  font-size:12px;
+  letter-spacing:.12em;
+  color:var(--gold);
+}
+.logo.is-fallback img{display:none}
+.logo.is-fallback .logoFallback{display:block}
 
-.pills{display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1;}
+/* Texto marca (compacto) */
+.brandTxt{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  line-height:1.05;
+  min-width: 90px;
+}
+.brandTxt b{font-size:14px; letter-spacing:.6px}
+.brandTxt span{font-size:11px; color:var(--muted2); letter-spacing:.18em; text-transform:uppercase}
+
+/* Pills compactas a la derecha */
+.pills{
+  display:flex; align-items:center; gap:8px;
+  margin-left:auto;
+  flex-wrap:nowrap;
+}
 .pill{
-  display:inline-flex; align-items:center; gap:8px;
-  padding: 9px 10px;
+  display:inline-flex; align-items:center; gap:7px;
+  padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.22);
   color: var(--muted);
   font-size:12px;
+  white-space:nowrap;
 }
 .pill strong{color:var(--text); font-variant-numeric: tabular-nums}
 .pill.btnlike{cursor:pointer; user-select:none}
 .pill:hover{border-color: rgba(255,255,255,.18)}
-.pills .spacer{flex:1}
 
-.headerCta{display:flex; align-items:center; gap:10px;}
-.headerBtn{
-  display:inline-flex; align-items:center; gap:10px;
-  padding: 11px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  text-decoration:none;
-  font-weight:950;
-  box-shadow: var(--shadow2);
-  transition: transform .08s ease, filter .08s ease;
-  user-select:none;
-}
-.headerBtn:hover{transform: translateY(-1px); filter: brightness(1.05)}
-.headerBtn:active{transform: translateY(0)}
-.headerBtn.alt{
-  background: rgba(0,0,0,.20);
-  color: var(--text);
-}
-.headerBtn.main{
-  background: linear-gradient(90deg, rgba(255,45,45,.98), rgba(255,75,75,.96));
-  color:#12060a;
-}
-
-@media(max-width:860px){
-  .brand{min-width:unset}
+/* En pantallas muy chicas: oculto el texto "Tiempo limitado" y dejo solo el contador */
+@media(max-width:420px){
   .brandTxt span{display:none}
-}
-@media(max-width:720px){
-  .headerCta{display:none}
+  .pill .lbl{display:none}
+  .logo{width:58px; height:40px}
 }
 
-/* Layout */
+/* ===================== LAYOUT ===================== */
 .grid{
   display:grid;
   grid-template-columns: 1.12fr .88fr;
@@ -173,7 +174,6 @@ body{
   white-space:nowrap;
 }
 
-/* Hero (más pro) */
 .hero{
   border:1px solid rgba(255,255,255,.10);
   background:
@@ -211,7 +211,6 @@ body{
 .kpi .v{font-size:19px; font-weight:1000; margin-top:4px}
 .kpi .sub{color:var(--muted); font-size:12px; margin-top:3px}
 
-/* Selector */
 .selector{
   margin-top:12px;
   border:1px solid rgba(255,255,255,.10);
@@ -276,8 +275,6 @@ input[type="range"]{width:100%; accent-color: var(--red);}
   font-size:12px;
 }
 .note b{color:var(--text)}
-
-hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;}
 
 /* Right summary */
 .summaryCard{display:grid; gap:10px;}
@@ -428,33 +425,25 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
 
 <div class="container">
   <div class="shell">
+    <!-- HEADER COMPACTO -->
     <div class="topbar">
-      <div class="brand">
-        <div class="logo" title="Logo BET300">
-          <!-- =================================================
-               LOGO PLACEHOLDER
-               Recomendado: SVG. Si es PNG/WebP: mínimo 256x256 (ideal 512x512)
-               Archivo sugerido: logo.svg (o logo.png) en el mismo directorio.
-               ================================================= -->
-          <img id="logoImg" src="logo.svg" alt="BET300"/>
-        </div>
-        <div class="brandTxt">
-          <b>BET300</b>
-          <span>beneficio progresivo</span>
-        </div>
+      <div class="logo" id="logoBox" title="Logo BET300">
+        <img id="logoImg" src="logo.svg" alt="BET300"/>
+        <div class="logoFallback">BET300</div>
+      </div>
+
+      <div class="brandTxt">
+        <b>BET300</b>
+        <span>beneficio progresivo</span>
       </div>
 
       <div class="pills">
-        <span class="pill">✨ Activación diaria</span>
-        <span class="pill">⏳ Tiempo limitado: <strong id="countdown">--:--</strong></span>
-        <span class="pill btnlike" id="soundToggle">🔊 Sonido: <strong id="soundState">ON</strong></span>
-        <span class="pill">🧩 PC: <strong id="pcLabel">1</strong></span>
-        <span class="spacer"></span>
-
-        <div class="headerCta">
-          <a class="headerBtn alt" id="headerEnter" target="_blank" rel="noopener">🎮 Entrar</a>
-          <a class="headerBtn main" id="headerClaim" href="javascript:void(0)">📲 Reclamar</a>
-        </div>
+        <span class="pill">
+          ⏳ <span class="lbl">Tiempo limitado:</span> <strong id="countdown">--:--</strong>
+        </span>
+        <span class="pill btnlike" id="soundToggle">
+          🔊 <span class="lbl">Sonido:</span> <strong id="soundState">ON</strong>
+        </span>
       </div>
     </div>
 
@@ -464,8 +453,8 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
         <div class="inner">
           <div class="panelTitle">
             <div>
-              <h1 id="hTitle">Beneficio Progresivo</h1>
-              <p id="hSub">Elegí tu nivel según tu carga. El beneficio sube en tiempo real y se genera un código de activación.</p>
+              <h1>Beneficio Progresivo</h1>
+              <p>Elegí tu nivel según tu carga. Se genera un código de activación.</p>
             </div>
             <div class="badgeLux" id="luxTag">⚡ 1 chance por día</div>
           </div>
@@ -506,8 +495,8 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
               </div>
             </div>
 
-            <div class="note" id="noteBox">
-              <b>Cómo se activa:</b> seleccionás tu escala → generás tu código → elegís reclamo por WhatsApp o entrás directo.
+            <div class="note">
+              <b>Cómo se activa:</b> seleccionás tu escala → generás tu código → reclamás por WhatsApp o entrás directo.
               <br/><br/>
               <span style="color:var(--muted2)">*</span> El beneficio se acredita con tu próxima carga según condiciones vigentes.
             </div>
@@ -519,8 +508,8 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
       <aside class="panel">
         <div class="inner summaryCard">
           <div class="big">
-            <h2 id="sumTitle">Tu beneficio listo para activar</h2>
-            <div class="desc" id="sumDesc">Confirmá para que quede registrado. Si preferís, entrá directo a la plataforma.</div>
+            <h2>Tu beneficio listo para activar</h2>
+            <div class="desc">Confirmá para que quede registrado. Si preferís, entrá directo a la plataforma.</div>
 
             <div class="line">
               <div>Usuario: <b id="userLabel">—</b></div>
@@ -528,14 +517,14 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
               <div>Mínimo: <b id="minLabel">$ 10.000</b></div>
             </div>
 
-            <div class="codeBox" id="codeBox">
+            <div class="codeBox">
               Código: <b id="codeLabel">—</b><br/>
               Fecha/Hora: <b id="tsLabel">—</b>
             </div>
           </div>
 
           <div class="note">
-            <b>Tip operativo:</b> para usuarios fuertes, empujá a <b>Pro</b> o <b>Max</b> (sube el % y el retorno).
+            <b>Tip operativo:</b> para usuarios fuertes, empujá a <b>Pro</b> o <b>Max</b>.
             <br/><br/>
             Si ya usó la chance del día, el sistema lo bloquea automáticamente.
           </div>
@@ -562,22 +551,10 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
       <div class="x" id="mClose" aria-label="Cerrar">✖</div>
     </div>
     <div class="modalBody">
-      <div class="modalRow">
-        <div class="k">Beneficio</div>
-        <div class="v" id="mBenefit">—</div>
-      </div>
-      <div class="modalRow">
-        <div class="k">Mínimo</div>
-        <div class="v" id="mMin">—</div>
-      </div>
-      <div class="modalRow">
-        <div class="k">Código</div>
-        <div class="v" id="mCode">—</div>
-      </div>
-      <div class="modalRow">
-        <div class="k">Fecha/Hora</div>
-        <div class="v" id="mTs">—</div>
-      </div>
+      <div class="modalRow"><div class="k">Beneficio</div><div class="v" id="mBenefit">—</div></div>
+      <div class="modalRow"><div class="k">Mínimo</div><div class="v" id="mMin">—</div></div>
+      <div class="modalRow"><div class="k">Código</div><div class="v" id="mCode">—</div></div>
+      <div class="modalRow"><div class="k">Fecha/Hora</div><div class="v" id="mTs">—</div></div>
 
       <div class="modalActions">
         <button class="btn claim" id="mWa">📲 Reclamar por WhatsApp</button>
@@ -588,14 +565,12 @@ hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;
 </div>
 
 <script>
-/* ==========================================================
-   CONFIG
-   ========================================================== */
+/* ================= CONFIG ================= */
 
-// ✅ Link único para todas las PC
+// Link único
 const ENTER_URL = "https://bet300.biz";
 
-// ✅ WhatsApp genéricos (después reemplazás por reales)
+// WhatsApp genéricos (reemplazás después)
 const WP_NUMBERS = {
   pc1: "5491100000000",
   pc2: "5491100000000",
@@ -610,27 +585,22 @@ function normalizeWP(n){
   return s.startsWith("+") ? s.slice(1) : s;
 }
 
-// Params: ?pc=1..5 y opcional ?user=Nombre
+// params: ?pc=1..5 (NO SE MUESTRA EN HEADER) y opcional ?user=Nombre
 const params = new URLSearchParams(location.search);
 const pcParam = (params.get("pc")||"1").trim();
 const pcMatch = /^[1-5]$/.test(pcParam) ? pcParam : "1";
 const pcKey = "pc"+pcMatch;
 const USER = (params.get("user")||"").trim();
 
-document.getElementById("pcLabel").textContent = pcMatch;
 document.getElementById("userLabel").textContent = USER ? USER : "—";
 
 const WP = normalizeWP(WP_NUMBERS[pcKey] || "");
 
-// Header + Dock enter
-document.getElementById("headerEnter").href = ENTER_URL;
+// botones enter
 document.getElementById("btnEnter").onclick = ()=> window.open(ENTER_URL, "_blank", "noopener");
 document.getElementById("mEnter").onclick   = ()=> window.open(ENTER_URL, "_blank", "noopener");
 
-/* ==========================================================
-   BENEFICIO PROGRESIVO (cap 50% como pediste antes)
-   - Podés ajustar estos escalones a gusto.
-   ========================================================== */
+/* ================= BENEFICIO PROGRESIVO ================= */
 const SCALE = [
   {min:  5000, pct: 20, tier:"base"},
   {min:  8000, pct: 22, tier:"base"},
@@ -707,9 +677,7 @@ tierPills.addEventListener("click", (e)=>{
 
 updateUI();
 
-/* ==========================================================
-   1 chance por día + código + timestamp
-   ========================================================== */
+/* ================= 1 CHANCE + CÓDIGO ================= */
 const SALT = "bet300-benefit-v2";
 function todayKey(){
   const n=new Date();
@@ -755,9 +723,7 @@ function dailyResetIfNeeded(){
 }
 dailyResetIfNeeded();
 
-/* ==========================================================
-   Sonido simple
-   ========================================================== */
+/* ================= SONIDO ================= */
 let soundOn = true;
 const soundToggle = document.getElementById("soundToggle");
 const soundState  = document.getElementById("soundState");
@@ -787,12 +753,9 @@ soundToggle.addEventListener("click", ()=>{
   soundState.textContent = soundOn ? "ON" : "OFF";
 });
 
-/* ==========================================================
-   Generate / Claim / Modal
-   ========================================================== */
+/* ================= GENERATE / CLAIM / MODAL ================= */
 const btnGenerate = document.getElementById("btnGenerate");
 const btnClaim = document.getElementById("btnClaim");
-const headerClaim = document.getElementById("headerClaim");
 
 const codeLabel = document.getElementById("codeLabel");
 const tsLabel = document.getElementById("tsLabel");
@@ -822,7 +785,7 @@ function buildMessage(payload){
 
 function doWA(payload){
   if(!WP){
-    alert("WhatsApp no configurado para esta PC (dejé genérico). Luego completás WP_NUMBERS.");
+    alert("WhatsApp no configurado (dejé genérico). Luego completás WP_NUMBERS.");
     return;
   }
   const msg = buildMessage(payload);
@@ -840,7 +803,6 @@ function setPayloadUI(payload){
 
   btnClaim.disabled = false;
   btnClaim.onclick = ()=> doWA(payload);
-  headerClaim.onclick = ()=> doWA(payload);
   mWa.onclick = ()=> doWA(payload);
 }
 
@@ -894,9 +856,7 @@ function openModalAlreadyUsed(){
   alert("Ya usaste tu chance de hoy.");
 }
 
-/* ==========================================================
-   Countdown hasta fin del día
-   ========================================================== */
+/* ================= COUNTDOWN ================= */
 function endOfDay(){
   const n=new Date();
   return new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23,59,0,0).getTime();
@@ -912,9 +872,7 @@ function tickCountdown(){
 tickCountdown();
 setInterval(tickCountdown, 1000);
 
-/* ==========================================================
-   Toast
-   ========================================================== */
+/* ================= TOAST ================= */
 const toastEl = document.getElementById("toast");
 let toastTO=null;
 function toast(msg){
@@ -924,9 +882,7 @@ function toast(msg){
   toastTO = setTimeout(()=>toastEl.classList.remove("show"), 1400);
 }
 
-/* ==========================================================
-   Partículas premium (sutiles)
-   ========================================================== */
+/* ================= PARTÍCULAS ================= */
 (function particles(){
   const c = document.getElementById("fx");
   const ctx = c.getContext("2d");
@@ -937,12 +893,12 @@ function toast(msg){
     W = Math.floor(innerWidth * DPR);
     H = Math.floor(innerHeight * DPR);
     c.width = W; c.height = H;
-    pts = Array.from({length: 88}, ()=>({
+    pts = Array.from({length: 76}, ()=>({
       x: Math.random()*W,
       y: Math.random()*H,
       r: (Math.random()*1.7 + 0.45)*DPR,
-      a: Math.random()*0.33 + 0.08,
-      vx: (Math.random()*0.22 + 0.05)*DPR,
+      a: Math.random()*0.30 + 0.06,
+      vx: (Math.random()*0.20 + 0.05)*DPR,
       vy: (Math.random()*0.18 + 0.04)*DPR
     }));
   }
@@ -978,6 +934,13 @@ function toast(msg){
     requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* ================= LOGO FALLBACK (si no carga) ================= */
+(function logoFallback(){
+  const img = document.getElementById("logoImg");
+  const box = document.getElementById("logoBox");
+  img.addEventListener("error", ()=> box.classList.add("is-fallback"));
 })();
 </script>
 </body>
