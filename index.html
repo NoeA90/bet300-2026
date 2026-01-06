@@ -3,36 +3,30 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>BET300 · Beneficio Progresivo</title>
-<meta name="theme-color" content="#070a14"/>
+<title>Beneficio Progresivo · BET300</title>
+<meta name="theme-color" content="#0b0f18"/>
 
 <style>
 :root{
-  --bg:#070a14;
-  --bg2:#0b1020;
+  --bg:#070b12;
+  --panel:#0c1220;
+  --panel2:#0a101d;
+  --border:rgba(255,255,255,.10);
 
-  --panel: rgba(255,255,255,.06);
-  --panel2: rgba(255,255,255,.04);
+  --text:#eaf0ff;
+  --muted:#a8b0c7;
+  --muted2:#7d86a3;
 
-  --border: rgba(255,255,255,.10);
-  --border2: rgba(255,255,255,.16);
+  --gold:#f6d27b;
+  --gold2:#caa24f;
 
-  --text:#eef2ff;
-  --muted:#b7c0e6;
-  --muted2:#93a0d7;
+  --ok:#25D366;
 
-  --gold:#f5d37b;
+  /* Botón rojo brillante */
+  --red1:#ff2e2e;
+  --red2:#ff4d4d;
 
-  --red:#ff2d2d;
-  --wa:#25D366;
-
-  --shadow: 0 18px 60px rgba(0,0,0,.55);
-  --shadow2: 0 14px 30px rgba(0,0,0,.35);
-
-  --radius: 18px;
-  --radius2: 22px;
-
-  --maxw: 1080px;
+  --glass: rgba(10,14,22,.55);
 }
 
 *{box-sizing:border-box}
@@ -40,46 +34,62 @@ html,body{height:100%}
 body{
   margin:0;
   color:var(--text);
-  font: 15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;
-  background:
-    radial-gradient(900px 520px at 15% -10%, rgba(255,45,45,.20), transparent 60%),
-    radial-gradient(900px 520px at 92% 0%, rgba(245,211,123,.16), transparent 56%),
-    radial-gradient(980px 640px at 60% 120%, rgba(140,160,255,.12), transparent 55%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 55%, #070a14 100%);
+  font:16px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background: radial-gradient(900px 500px at 30% -10%, rgba(255,46,46,.16), transparent 60%),
+              radial-gradient(700px 420px at 80% 0%, rgba(246,210,123,.10), transparent 60%),
+              radial-gradient(900px 650px at 50% 120%, rgba(80,140,255,.10), transparent 60%),
+              linear-gradient(180deg, #070b12 0%, #070b12 65%, #050810 100%);
   overflow-x:hidden;
 }
 
-.fx{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.75;}
-.fx canvas{width:100%; height:100%; display:block}
-
-.container{max-width:var(--maxw); margin:14px auto 96px; padding:0 12px;}
-.shell{
-  border:1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  border-radius: var(--radius2);
-  box-shadow: var(--shadow);
-  overflow:hidden;
-}
-
-/* ===================== HEADER (UNA LÍNEA) ===================== */
-.topbar{
-  display:flex; align-items:center; gap:10px;
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+/* Partículas premium (suave) */
+.fxParticles{
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
   background:
-    radial-gradient(120% 120% at 10% 0%, rgba(255,45,45,.22), transparent 55%),
-    radial-gradient(120% 120% at 90% 0%, rgba(245,211,123,.18), transparent 55%),
-    rgba(0,0,0,.18);
-  backdrop-filter: blur(12px);
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,.06) 0 2px, transparent 3px),
+    radial-gradient(circle at 25% 60%, rgba(255,255,255,.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 60% 30%, rgba(255,255,255,.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,.06) 0 2px, transparent 3px);
+  filter: blur(.2px);
+  opacity:.75;
+}
+.snow{
+  position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.45;
+}
+.snow i{
+  position:absolute; top:-20px;
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.55);
+  filter: blur(.2px);
+  animation: fall linear forwards;
+}
+@keyframes fall{
+  0%{ transform:translateY(-20px); opacity:0; }
+  12%{ opacity:.9; }
+  100%{ transform:translateY(110vh); opacity:0; }
 }
 
-/* Logo más visible */
+.container{max-width:980px;margin:10px auto 110px;padding:0 12px}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)), var(--glass);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:12px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.50);
+  backdrop-filter: blur(10px);
+}
+
+/* Header 1 línea */
+.headerRow{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 8px 10px;
+}
 .logo{
-  width:64px; height:44px;  /* + grande */
-  border-radius: 14px;
+  width:92px; height:56px;
+  border-radius:16px;
   border:1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.20);
-  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+  background: rgba(0,0,0,.18);
+  box-shadow: 0 14px 36px rgba(0,0,0,.48);
   overflow:hidden;
   display:flex; align-items:center; justify-content:center;
   flex: 0 0 auto;
@@ -87,612 +97,531 @@ body{
 .logo img{
   width:100%; height:100%;
   object-fit:contain;
-  padding:4px; /* menos padding, se ve mejor */
+  padding:3px;
   display:block;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,.55)) saturate(1.12) contrast(1.06);
 }
-.logoFallback{
-  display:none;
-  font-weight:1000;
-  font-size:12px;
-  letter-spacing:.12em;
-  color:var(--gold);
-}
-.logo.is-fallback img{display:none}
-.logo.is-fallback .logoFallback{display:block}
 
-/* Texto marca (compacto) */
-.brandTxt{
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  line-height:1.05;
-  min-width: 90px;
-}
-.brandTxt b{font-size:14px; letter-spacing:.6px}
-.brandTxt span{font-size:11px; color:var(--muted2); letter-spacing:.18em; text-transform:uppercase}
-
-/* Pills compactas a la derecha */
-.pills{
-  display:flex; align-items:center; gap:8px;
+.headerRight{
   margin-left:auto;
-  flex-wrap:nowrap;
+  display:flex; align-items:center; gap:8px; flex-wrap:nowrap;
 }
 .pill{
-  display:inline-flex; align-items:center; gap:7px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.22);
-  color: var(--muted);
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:13px;
+  color:var(--muted);
+  background: rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.10);
+}
+.count{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:86px;
+  font-variant-numeric:tabular-nums;
+  padding:4px 10px;
+  border-radius:999px;
+  background: rgba(246,210,123,.10);
+  border:1px solid rgba(246,210,123,.25);
+  color:#ffe7a8;
+  font-weight:800;
+}
+.pillBtn{
+  cursor:pointer; user-select:none;
+}
+.pillBtn:hover{filter:brightness(1.06)}
+.pill b{color:#dfe6ff}
+
+.subline{
+  padding:0 8px 6px;
+  color:var(--muted2);
   font-size:12px;
-  white-space:nowrap;
-}
-.pill strong{color:var(--text); font-variant-numeric: tabular-nums}
-.pill.btnlike{cursor:pointer; user-select:none}
-.pill:hover{border-color: rgba(255,255,255,.18)}
-
-/* En pantallas muy chicas: oculto el texto "Tiempo limitado" y dejo solo el contador */
-@media(max-width:420px){
-  .brandTxt span{display:none}
-  .pill .lbl{display:none}
-  .logo{width:58px; height:40px}
+  letter-spacing:.16em;
+  text-transform:uppercase;
 }
 
-/* ===================== LAYOUT ===================== */
-.grid{
-  display:grid;
-  grid-template-columns: 1.12fr .88fr;
-  gap: 12px;
-  padding: 12px;
+/* Layout */
+.grid{display:grid; gap:12px}
+@media(min-width:920px){
+  .grid{grid-template-columns:1.12fr .88fr}
 }
-@media(max-width:940px){ .grid{grid-template-columns:1fr;} }
-
 .panel{
   border:1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.18);
-  border-radius: var(--radius);
-  box-shadow: 0 12px 30px rgba(0,0,0,.25);
-  overflow:hidden;
+  border-radius:18px;
+  padding:14px;
 }
-.panel .inner{padding: 14px}
+h1{margin:0 0 6px;font-size:30px;letter-spacing:.2px}
+h2{margin:0 0 6px;font-size:18px}
+p{margin:0 0 10px;color:var(--muted)}
+.small{font-size:12px;color:var(--muted2)}
 
-.panelTitle{
-  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-  margin-bottom:10px;
-}
-.panelTitle h1{margin:0; font-size:22px; letter-spacing:.2px}
-.panelTitle p{margin:6px 0 0; color:var(--muted); font-size:13px}
-.badgeLux{
-  display:inline-flex; align-items:center; gap:8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border:1px solid rgba(245,211,123,.25);
-  background: rgba(245,211,123,.08);
-  color: var(--gold);
-  font-weight:900;
-  font-size:12px;
-  white-space:nowrap;
-}
-
-.hero{
+/* Bloques internos */
+.box{
   border:1px solid rgba(255,255,255,.10);
-  background:
-    radial-gradient(120% 120% at 15% 0%, rgba(255,45,45,.18), transparent 55%),
-    radial-gradient(120% 120% at 92% 10%, rgba(245,211,123,.14), transparent 55%),
-    radial-gradient(80% 80% at 50% 120%, rgba(120,150,255,.10), transparent 55%),
-    rgba(255,255,255,.03);
-  border-radius: 18px;
-  padding: 14px;
-  position:relative;
-  overflow:hidden;
+  border-radius:16px;
+  padding:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
 }
-.hero:before{
-  content:"";
-  position:absolute; inset:-1px;
-  background: linear-gradient(120deg, rgba(255,45,45,.22), rgba(245,211,123,.14), rgba(120,150,255,.12));
-  opacity:.18;
-  filter: blur(18px);
-  pointer-events:none;
-}
-.hero > *{position:relative; z-index:1;}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rowBetween{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.k{color:var(--muted2);font-size:12px;text-transform:uppercase;letter-spacing:.14em}
+.v{font-weight:900;font-size:26px}
 
-.row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
-@media(max-width:560px){ .row2{grid-template-columns:1fr} }
-
-.kpi{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.22);
-  border-radius: 16px;
-  padding: 12px;
-  transition: transform .12s ease, border-color .12s ease;
-}
-.kpi:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.16);}
-.kpi .k{color:var(--muted2); font-size:12px}
-.kpi .v{font-size:19px; font-weight:1000; margin-top:4px}
-.kpi .sub{color:var(--muted); font-size:12px; margin-top:3px}
-
-.selector{
-  margin-top:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.20);
-  border-radius: 18px;
-  padding: 12px;
-}
-.selectorHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
-.selectorHead .left b{display:block; font-size:14px}
-.selectorHead .left span{display:block; font-size:12px; color:var(--muted)}
-
-.tierPills{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
-.tier{
-  padding:7px 10px;
+/* Selector escala */
+.scaleTabs{display:flex;gap:8px;margin-top:10px}
+.tab{
+  flex:1;
+  padding:10px 12px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  font-size:12px;
-  color: var(--muted);
-  cursor:pointer;
-  user-select:none;
-  transition: transform .08s ease, border-color .12s ease, background .12s ease;
-}
-.tier:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.16);}
-.tier.active{
-  border-color: rgba(245,211,123,.30);
-  background: rgba(245,211,123,.10);
-  color: var(--gold);
-  font-weight:1000;
-}
-
-.rangeWrap{margin-top:6px;}
-input[type="range"]{width:100%; accent-color: var(--red);}
-
-.scale{
-  display:flex; justify-content:space-between;
-  font-size:11px; color:var(--muted2);
-  margin-top:6px;
-}
-.progress{
-  margin-top:10px;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  overflow:hidden;
-}
-.progress > i{
-  display:block; height:100%;
-  width: 30%;
-  background: linear-gradient(90deg, rgba(255,45,45,.95), rgba(245,211,123,.85));
-  border-radius:999px;
-}
-
-.note{
-  margin-top:12px;
-  border:1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.03);
-  border-radius: 16px;
-  padding: 12px;
-  color: var(--muted);
-  font-size:12px;
-}
-.note b{color:var(--text)}
-
-/* Right summary */
-.summaryCard{display:grid; gap:10px;}
-.big{
-  border:1px solid rgba(255,255,255,.10);
-  background:
-    radial-gradient(120% 120% at 30% 0%, rgba(255,45,45,.14), transparent 55%),
-    radial-gradient(120% 120% at 90% 20%, rgba(245,211,123,.12), transparent 55%),
-    rgba(0,0,0,.20);
-  border-radius: 18px;
-  padding: 14px;
-}
-.big h2{margin:0; font-size:16px; letter-spacing:.2px}
-.big .desc{margin-top:6px; color:var(--muted); font-size:13px}
-.big .line{
-  margin-top:10px;
-  display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-  color: var(--muted2);
-  font-size:12px;
-}
-.big .line b{color:var(--text)}
-.codeBox{
-  margin-top:10px;
-  border-radius: 14px;
-  border:1px dashed rgba(255,255,255,.18);
   background: rgba(0,0,0,.18);
-  padding: 10px;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
-  font-size:12px;
+  color:#dfe6ff;
+  font-weight:800;
+  cursor:pointer;
+  text-align:center;
 }
-.codeBox b{color:var(--text)}
+.tab.active{
+  background: linear-gradient(180deg, rgba(246,210,123,.18), rgba(246,210,123,.08));
+  border-color: rgba(246,210,123,.30);
+  color:#ffe7a8;
+}
 
-/* Dock */
-.dock{
-  position:fixed;
-  left:0; right:0; bottom:0;
-  z-index:50;
-  padding: 10px 12px 14px;
-  background: linear-gradient(180deg, rgba(7,10,20,0) 0%, rgba(7,10,20,.72) 25%, rgba(7,10,20,.92) 100%);
-  backdrop-filter: blur(12px);
+/* Barra progreso */
+.meter{
+  margin-top:10px;
+  height:12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  overflow:hidden;
 }
-.dockInner{
-  max-width: var(--maxw);
-  margin: 0 auto;
-  display:flex; gap:10px;
+.meter > i{
+  display:block; height:100%; width:0%;
+  background: linear-gradient(90deg, rgba(246,210,123,.30), rgba(255,46,46,.35));
+  border-right: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 0 18px rgba(255,46,46,.20);
+}
+
+/* Inputs */
+input[type="range"]{width:100%}
+.amountPills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.apill{
+  padding:8px 10px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  color:#dfe6ff; font-weight:800; font-size:13px;
+}
+.apill:hover{filter:brightness(1.06)}
+
+/* Botones inferiores */
+.dock{
+  position:fixed; left:0; right:0; bottom:0; z-index:30;
+  padding:10px 12px 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(5,7,12,.72) 22%, rgba(5,7,12,.92) 100%);
+  display:grid;
+  gap:10px;
 }
 .btn{
-  width:100%;
-  border:none;
-  border-radius: 16px;
-  padding: 14px 14px;
-  font-weight:1000;
-  cursor:pointer;
-  box-shadow: var(--shadow2);
+  appearance:none; border:none; cursor:pointer;
+  padding:14px 16px;
+  border-radius:16px;
+  font-weight:900;
+  letter-spacing:.2px;
+  color:#081018;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 16px 30px rgba(0,0,0,.40);
   transition: transform .08s ease, filter .08s ease;
 }
-.btn:hover{transform: translateY(-1px); filter: brightness(1.04)}
+.btn:hover{transform: translateY(-1px); filter: brightness(1.05)}
 .btn:active{transform: translateY(0)}
-.btn:disabled{opacity:.55; cursor:not-allowed; filter:none; transform:none}
+.btn:disabled{opacity:.55; cursor:not-allowed}
 
-.btn.claim{background: linear-gradient(90deg, var(--wa), #7CFFB1); color:#07110a;}
-.btn.enter{background: linear-gradient(90deg, rgba(255,45,45,.98), rgba(255,75,75,.96)); color:#12060a;}
-.btn.ghost{
-  background: rgba(255,255,255,.06);
-  color: var(--text);
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow: none;
+.btnPrimary{
+  background: linear-gradient(90deg, rgba(246,210,123,.95), rgba(202,162,79,.95));
+  color:#130b00;
 }
-
-.toast{
-  position:fixed; left:50%; bottom:92px;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,.55);
-  border:1px solid rgba(255,255,255,.14);
-  padding: 10px 12px;
-  border-radius: 999px;
-  color: var(--muted);
-  font-size:12px;
-  opacity:0; pointer-events:none;
-  transition: opacity .18s ease, transform .18s ease;
-  backdrop-filter: blur(10px);
-  z-index:80;
+.btnWA{
+  background: var(--ok);
+  color:#06120a;
 }
-.toast.show{opacity:1; transform: translateX(-50%) translateY(-6px);}
+.btnEnter{
+  background: linear-gradient(90deg, var(--red1), var(--red2));
+  color:#180000;
+}
 
 /* Modal */
 .modal{
-  position:fixed; inset:0;
-  display:none;
+  position:fixed; inset:0; display:none;
   align-items:center; justify-content:center;
-  background: rgba(0,0,0,.55);
-  z-index:100;
-  padding: 18px;
+  background: rgba(0,0,0,.62);
   backdrop-filter: blur(6px);
+  z-index:60;
+  padding:14px;
 }
 .modal.show{display:flex}
 .modalCard{
-  width: min(520px, 92vw);
-  border-radius: 18px;
+  width:min(520px, 94vw);
+  border-radius:18px;
   border:1px solid rgba(255,255,255,.12);
-  background:
-    radial-gradient(120% 120% at 30% 0%, rgba(255,45,45,.16), transparent 55%),
-    radial-gradient(120% 120% at 90% 20%, rgba(245,211,123,.14), transparent 55%),
-    rgba(10,12,22,.88);
-  box-shadow: 0 24px 70px rgba(0,0,0,.60);
-  overflow:hidden;
+  background: rgba(8,12,18,.85);
+  box-shadow: 0 22px 70px rgba(0,0,0,.60);
+  padding:14px;
 }
-.modalHead{
-  display:flex; align-items:center; gap:10px;
-  padding: 14px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.modalHead h3{margin:0; font-size:16px}
-.modalHead .x{
-  margin-left:auto;
-  width:38px; height:38px;
-  border-radius: 12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  display:grid; place-items:center;
-  cursor:pointer;
-  user-select:none;
-}
-.modalBody{padding:14px}
-.modalRow{
-  display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+.modalHead{display:flex;gap:10px;align-items:center}
+.modalHead h3{margin:0;font-size:18px}
+.closeX{margin-left:auto;cursor:pointer;opacity:.85}
+.closeX:hover{opacity:1}
+.modalBody{margin-top:10px;display:grid;gap:10px}
+.mRow{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
   border:1px dashed rgba(255,255,255,.16);
-  background: rgba(0,0,0,.18);
-  border-radius: 14px;
-  padding: 10px;
-  margin-bottom:10px;
+  border-radius:14px;
+  padding:10px 12px;
 }
-.modalRow .k{color:var(--muted2); font-size:12px}
-.modalRow .v{font-weight:1000}
-.modalActions{display:flex; gap:10px; margin-top:10px}
-.modalActions .btn{box-shadow:none}
+.code{
+  font-weight:1000;
+  letter-spacing:.12em;
+  font-variant-numeric:tabular-nums;
+}
+.mActions{display:flex;gap:8px;flex-wrap:wrap}
+.mActions .btn{flex:1}
 
-@media(max-width:640px){
-  .dockInner{flex-direction:column}
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%);
+  bottom:96px; z-index:80;
+  background: rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.12);
+  color:#eaf0ff;
+  padding:10px 12px;
+  border-radius:999px;
+  font-size:13px;
+  display:none;
+}
+
+/* Mobile ajustes */
+@media(max-width:420px){
+  .container{margin:8px auto 120px}
+  .logo{width:84px;height:52px}
+  h1{font-size:26px}
+  .pill{font-size:12px;padding:7px 9px}
+  .count{min-width:78px}
 }
 </style>
 </head>
 
 <body>
-<div class="fx" aria-hidden="true"><canvas id="fx"></canvas></div>
-<div id="toast" class="toast"></div>
+<div class="fxParticles"></div>
+<div id="snow" class="snow" aria-hidden="true"></div>
+
+<div class="toast" id="toast">Copiado ✅</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modalCard">
+    <div class="modalHead">
+      <h3 id="mTitle">✅ Código generado</h3>
+      <span class="closeX" id="mCloseX">✖</span>
+    </div>
+
+    <div class="modalBody">
+      <div class="mRow"><span class="k">Beneficio</span><span class="v" id="mBenefit">—</span></div>
+      <div class="mRow"><span class="k">Monto</span><span class="v" id="mAmount">—</span></div>
+      <div class="mRow"><span class="k">Código</span><span class="code" id="mCode">—</span></div>
+      <div class="mRow"><span class="k">Fecha/Hora</span><span class="v" id="mTs">—</span></div>
+
+      <div class="mActions">
+        <button class="btn btnPrimary" id="copyBtn">📋 Copiar código</button>
+        <button class="btn btnWA" id="mWA">📲 Reclamar por WhatsApp</button>
+        <button class="btn btnEnter" id="mEnter">🎮 Entrar a la plataforma</button>
+      </div>
+
+      <div class="small">
+        Nota: 1 chance por día. Sujeto a validación operativa. No reemplaza reglas internas de acreditación.
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="container">
-  <div class="shell">
-    <!-- HEADER COMPACTO -->
-    <div class="topbar">
-      <div class="logo" id="logoBox" title="Logo BET300">
-        <img id="logoImg" src="logo.svg" alt="BET300"/>
-        <div class="logoFallback">BET300</div>
+  <div class="card">
+
+    <!-- Header 1 línea -->
+    <div class="headerRow">
+      <div class="logo" aria-label="Logo">
+        <!-- ✅ Reemplazá logo.svg por tu SVG navideño (o PNG) -->
+        <img id="logoImg" src="logo.svg" alt="Logo BET300"/>
       </div>
 
-      <div class="brandTxt">
-        <b>BET300</b>
-        <span>beneficio progresivo</span>
-      </div>
-
-      <div class="pills">
-        <span class="pill">
-          ⏳ <span class="lbl">Tiempo limitado:</span> <strong id="countdown">--:--</strong>
-        </span>
-        <span class="pill btnlike" id="soundToggle">
-          🔊 <span class="lbl">Sonido:</span> <strong id="soundState">ON</strong>
-        </span>
+      <div class="headerRight">
+        <span class="pill">⏳ <span class="count" id="countdown">--:--</span></span>
+        <span class="pill pillBtn" id="soundToggle">🔊 <b id="soundState">ON</b></span>
       </div>
     </div>
 
+    <!-- Subline (sin BET300 escrito grande) -->
+    <div class="subline">beneficio progresivo</div>
+
     <div class="grid">
       <!-- LEFT -->
-      <section class="panel">
-        <div class="inner">
-          <div class="panelTitle">
+      <div class="panel">
+        <h1>Elegí tu nivel</h1>
+        <p>Seleccioná un monto, mirá el beneficio estimado y generá tu código. Después podés <b>reclamar por WhatsApp</b> o entrar directo a la plataforma.</p>
+
+        <div class="box">
+          <div class="rowBetween">
             <div>
-              <h1>Beneficio Progresivo</h1>
-              <p>Elegí tu nivel según tu carga. Se genera un código de activación.</p>
+              <div class="k">Monto seleccionado</div>
+              <div class="v" id="amountLabel">$ 10.000</div>
+              <div class="small">Ajustalo según el usuario</div>
             </div>
-            <div class="badgeLux" id="luxTag">⚡ 1 chance por día</div>
+            <div style="text-align:right">
+              <div class="k">Beneficio estimado</div>
+              <div class="v" id="benefitLabel">+20%</div>
+              <div class="small" id="tierLine">Nivel Base</div>
+            </div>
           </div>
 
-          <div class="hero">
-            <div class="row2">
-              <div class="kpi">
-                <div class="k">Monto seleccionado</div>
-                <div class="v" id="kAmount">$ 10.000</div>
-                <div class="sub">Ajustalo según el usuario</div>
-              </div>
-              <div class="kpi">
-                <div class="k">Beneficio estimado</div>
-                <div class="v" id="kBenefit">+20%</div>
-                <div class="sub" id="kHint">Nivel Base · Activación rápida</div>
-              </div>
+          <div class="meter" aria-label="Progreso del beneficio">
+            <i id="meterFill"></i>
+          </div>
+
+          <div style="margin-top:12px">
+            <input id="amountRange" type="range" min="5000" max="200000" step="5000" value="10000"/>
+            <div class="amountPills">
+              <button class="apill" data-amt="5000">$5.000</button>
+              <button class="apill" data-amt="10000">$10.000</button>
+              <button class="apill" data-amt="20000">$20.000</button>
+              <button class="apill" data-amt="50000">$50.000</button>
+              <button class="apill" data-amt="100000">$100.000</button>
             </div>
+          </div>
 
-            <div class="selector">
-              <div class="selectorHead">
-                <div class="left">
-                  <b>Elegí tu escala</b>
-                  <span>Más carga → mejor beneficio (sin azar)</span>
-                </div>
-                <div class="tierPills" id="tierPills">
-                  <div class="tier active" data-tier="base">Base</div>
-                  <div class="tier" data-tier="pro">Pro</div>
-                  <div class="tier" data-tier="max">Max</div>
-                </div>
-              </div>
+          <div class="scaleTabs" role="tablist" aria-label="Escala">
+            <button class="tab active" data-tier="base" role="tab">Base</button>
+            <button class="tab" data-tier="pro" role="tab">Pro</button>
+            <button class="tab" data-tier="elite" role="tab">Elite</button>
+          </div>
 
-              <div class="rangeWrap">
-                <input id="amountRange" type="range" min="1" max="12" step="1" value="3" aria-label="Monto"/>
-                <div class="scale">
-                  <span>$5k</span><span>$10k</span><span>$20k</span><span>$35k</span><span>$50k</span><span>$75k</span>
-                </div>
-                <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
-              </div>
-            </div>
-
-            <div class="note">
-              <b>Cómo se activa:</b> seleccionás tu escala → generás tu código → reclamás por WhatsApp o entrás directo.
-              <br/><br/>
-              <span style="color:var(--muted2)">*</span> El beneficio se acredita con tu próxima carga según condiciones vigentes.
+          <div class="box" style="margin-top:12px">
+            <div class="k">Condición</div>
+            <div style="margin-top:6px" class="small" id="condLine">
+              1 chance por día · Se genera un código de activación · El beneficio se acredita con la próxima carga.
             </div>
           </div>
         </div>
-      </section>
+
+      </div>
 
       <!-- RIGHT -->
-      <aside class="panel">
-        <div class="inner summaryCard">
-          <div class="big">
-            <h2>Tu beneficio listo para activar</h2>
-            <div class="desc">Confirmá para que quede registrado. Si preferís, entrá directo a la plataforma.</div>
-
-            <div class="line">
-              <div>Usuario: <b id="userLabel">—</b></div>
-              <div>Beneficio: <b id="benefitLabel">+20%</b></div>
-              <div>Mínimo: <b id="minLabel">$ 10.000</b></div>
+      <div class="panel">
+        <h2>Estado del día</h2>
+        <div class="box">
+          <div class="rowBetween">
+            <div>
+              <div class="k">Disponibilidad</div>
+              <div class="v" id="chanceLabel">1 chance</div>
+              <div class="small" id="doneLine">Aún no usaste tu chance hoy.</div>
             </div>
-
-            <div class="codeBox">
-              Código: <b id="codeLabel">—</b><br/>
-              Fecha/Hora: <b id="tsLabel">—</b>
+            <div style="text-align:right">
+              <div class="k">Último código</div>
+              <div class="small" id="lastCode">—</div>
+              <div class="small" id="lastTs">—</div>
             </div>
-          </div>
-
-          <div class="note">
-            <b>Tip operativo:</b> para usuarios fuertes, empujá a <b>Pro</b> o <b>Max</b>.
-            <br/><br/>
-            Si ya usó la chance del día, el sistema lo bloquea automáticamente.
           </div>
         </div>
-      </aside>
+
+        <div class="box" style="margin-top:12px">
+          <div class="k">Resumen para el cliente</div>
+          <div class="small" style="margin-top:8px">
+            ✅ Elegís tu monto → ✅ Generás un código → ✅ Se valida y se aplica el beneficio con la próxima carga.
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px">
+          <div class="k">Importante</div>
+          <div class="small" style="margin-top:8px">
+            Evitar prometer beneficios fuera de esta mecánica. Siempre comunicar “sujeto a validación”.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Dock -->
 <div class="dock">
-  <div class="dockInner">
-    <button class="btn ghost" id="btnGenerate">🧾 Generar código</button>
-    <button class="btn claim" id="btnClaim" disabled>📲 Reclamar por WhatsApp</button>
-    <button class="btn enter" id="btnEnter">🎮 Entrar a la plataforma</button>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <div class="modalHead">
-      <h3 id="mTitle">✅ Beneficio generado</h3>
-      <div class="x" id="mClose" aria-label="Cerrar">✖</div>
-    </div>
-    <div class="modalBody">
-      <div class="modalRow"><div class="k">Beneficio</div><div class="v" id="mBenefit">—</div></div>
-      <div class="modalRow"><div class="k">Mínimo</div><div class="v" id="mMin">—</div></div>
-      <div class="modalRow"><div class="k">Código</div><div class="v" id="mCode">—</div></div>
-      <div class="modalRow"><div class="k">Fecha/Hora</div><div class="v" id="mTs">—</div></div>
-
-      <div class="modalActions">
-        <button class="btn claim" id="mWa">📲 Reclamar por WhatsApp</button>
-        <button class="btn enter" id="mEnter">🎮 Entrar</button>
-      </div>
-    </div>
-  </div>
+  <button class="btn btnPrimary" id="genBtn">🧾 Generar código</button>
+  <button class="btn btnWA" id="waBtn" disabled>📲 Reclamar por WhatsApp</button>
+  <button class="btn btnEnter" id="enterBtn">🎮 Entrar a la plataforma</button>
 </div>
 
 <script>
-/* ================= CONFIG ================= */
+/* =========================
+   CONFIG (5 PCs)
+   ========================= */
+const PLATFORM_LINK = "https://bet300.biz"; // único para las 5
 
-// Link único
-const ENTER_URL = "https://bet300.biz";
-
-// WhatsApp genéricos (reemplazás después)
+// WhatsApps genéricos por PC (vos los reemplazás luego)
 const WP_NUMBERS = {
-  pc1: "5491100000000",
-  pc2: "5491100000000",
-  pc3: "5491100000000",
-  pc4: "5491100000000",
-  pc5: "5491100000000"
+  pc1: "1111111111",
+  pc2: "2222222222",
+  pc3: "3333333333",
+  pc4: "4444444444",
+  pc5: "5555555555"
 };
 
-function normalizeWP(n){
-  const s = String(n||"").replace(/[^\d+]/g,"");
-  if(!s) return "";
-  return s.startsWith("+") ? s.slice(1) : s;
-}
-
-// params: ?pc=1..5 (NO SE MUESTRA EN HEADER) y opcional ?user=Nombre
+// lee ?pc=1..5 (default 1)
 const params = new URLSearchParams(location.search);
-const pcParam = (params.get("pc")||"1").trim();
+const pcParam = (params.get("pc") || "1").trim();
 const pcMatch = /^[1-5]$/.test(pcParam) ? pcParam : "1";
-const pcKey = "pc"+pcMatch;
-const USER = (params.get("user")||"").trim();
+const pcKey = "pc" + pcMatch;
 
-document.getElementById("userLabel").textContent = USER ? USER : "—";
+// normaliza para wa.me (Argentina móvil por defecto)
+function normalizeWP(n){
+  const s = String(n).replace(/[^\d+]/g, "");
+  if (s.startsWith("+549") || s.startsWith("549")) return s.replace(/^\+/, "");
+  if (s.startsWith("+54"))  return "549" + s.slice(3);
+  if (s.startsWith("54"))   return "549" + s.slice(2);
+  return "549" + s;
+}
+const WP = normalizeWP(WP_NUMBERS[pcKey]);
 
-const WP = normalizeWP(WP_NUMBERS[pcKey] || "");
-
-// botones enter
-document.getElementById("btnEnter").onclick = ()=> window.open(ENTER_URL, "_blank", "noopener");
-document.getElementById("mEnter").onclick   = ()=> window.open(ENTER_URL, "_blank", "noopener");
-
-/* ================= BENEFICIO PROGRESIVO ================= */
-const SCALE = [
-  {min:  5000, pct: 20, tier:"base"},
-  {min:  8000, pct: 22, tier:"base"},
-  {min: 10000, pct: 25, tier:"base"},
-  {min: 15000, pct: 30, tier:"pro"},
-  {min: 20000, pct: 35, tier:"pro"},
-  {min: 25000, pct: 38, tier:"pro"},
-  {min: 35000, pct: 42, tier:"max"},
-  {min: 50000, pct: 45, tier:"max"},
-  {min: 75000, pct: 50, tier:"max"},
-  {min:100000, pct: 50, tier:"max"},
-  {min:150000, pct: 50, tier:"max"},
-  {min:200000, pct: 50, tier:"max"},
-];
-
+/* =========================
+   UI refs
+   ========================= */
 const amountRange = document.getElementById("amountRange");
-const kAmount = document.getElementById("kAmount");
-const kBenefit = document.getElementById("kBenefit");
-const kHint = document.getElementById("kHint");
+const amountLabel = document.getElementById("amountLabel");
 const benefitLabel = document.getElementById("benefitLabel");
-const minLabel = document.getElementById("minLabel");
-const progressFill = document.getElementById("progressFill");
-const tierPills = document.getElementById("tierPills");
+const tierLine = document.getElementById("tierLine");
+const meterFill = document.getElementById("meterFill");
 
-let selectedIndex = Number(amountRange.value||3);
+const genBtn = document.getElementById("genBtn");
+const waBtn = document.getElementById("waBtn");
+const enterBtn = document.getElementById("enterBtn");
 
-function money(n){ return "$ " + Number(n).toLocaleString("es-AR"); }
-function tierText(t){
-  if(t==="base") return "Nivel Base · Activación rápida";
-  if(t==="pro")  return "Nivel Pro · Mejor retorno";
-  return "Nivel Max · Beneficio alto";
+const chanceLabel = document.getElementById("chanceLabel");
+const doneLine = document.getElementById("doneLine");
+const lastCode = document.getElementById("lastCode");
+const lastTs = document.getElementById("lastTs");
+
+const soundToggle = document.getElementById("soundToggle");
+const soundState  = document.getElementById("soundState");
+
+const modal = document.getElementById("modal");
+const mCloseX = document.getElementById("mCloseX");
+const copyBtn = document.getElementById("copyBtn");
+const mWA = document.getElementById("mWA");
+const mEnter = document.getElementById("mEnter");
+const mBenefit = document.getElementById("mBenefit");
+const mAmount = document.getElementById("mAmount");
+const mCode = document.getElementById("mCode");
+const mTs = document.getElementById("mTs");
+const toast = document.getElementById("toast");
+
+/* =========================
+   Sonido (simple)
+   ========================= */
+let soundOn = true;
+soundToggle.addEventListener("click", () => {
+  soundOn = !soundOn;
+  soundState.textContent = soundOn ? "ON" : "OFF";
+});
+function ping(){
+  if(!soundOn) return;
+  try{
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new Ctx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = 880;
+    g.gain.value = 0.001;
+    o.connect(g).connect(ctx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.12);
+    o.stop(ctx.currentTime + 0.13);
+    setTimeout(()=>ctx.close?.(), 220);
+  }catch(e){}
 }
-function setActiveTier(t){
-  [...tierPills.querySelectorAll(".tier")].forEach(el=>{
-    el.classList.toggle("active", el.dataset.tier===t);
-  });
+
+/* =========================
+   Formato
+   ========================= */
+function money(n){ return "$ " + n.toLocaleString("es-AR"); }
+function pad2(n){ return String(n).padStart(2,"0"); }
+function tsString(d=new Date()){
+  return `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
-function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+
+/* =========================
+   Beneficio progresivo
+   (ajustable)
+   ========================= */
+let tier = "base"; // base|pro|elite
+
+function calcBenefit(amount, tier){
+  // Escala suave: a mayor monto, mayor %
+  // Base: 20%..30%
+  // Pro:  25%..40%
+  // Elite:30%..50%
+  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
+
+  const t = clamp((amount - 5000) / (200000 - 5000), 0, 1);
+
+  let minP=20, maxP=30, label="Nivel Base · Activación rápida";
+  if(tier==="pro"){ minP=25; maxP=40; label="Nivel Pro · Beneficio superior"; }
+  if(tier==="elite"){ minP=30; maxP=50; label="Nivel Elite · Máximo beneficio"; }
+
+  const pct = Math.round(minP + (maxP - minP)*t);
+  return { pct, label };
+}
 
 function updateUI(){
-  selectedIndex = clamp(selectedIndex, 1, SCALE.length);
-  const item = SCALE[selectedIndex-1];
+  const amount = Number(amountRange.value);
+  amountLabel.textContent = money(amount);
 
-  kAmount.textContent = money(item.min);
-  kBenefit.textContent = `+${item.pct}%`;
-  kHint.textContent = tierText(item.tier);
+  const { pct, label } = calcBenefit(amount, tier);
+  benefitLabel.textContent = `+${pct}%`;
+  tierLine.textContent = label;
 
-  benefitLabel.textContent = `+${item.pct}%`;
-  minLabel.textContent = money(item.min);
-
-  const pct = Math.round((selectedIndex / SCALE.length) * 100);
-  progressFill.style.width = pct + "%";
-
-  setActiveTier(item.tier);
+  // barra 20..50 => 0..100
+  const pMin = 20, pMax = 50;
+  const fill = Math.round(((pct - pMin) / (pMax - pMin)) * 100);
+  meterFill.style.width = Math.max(6, Math.min(100, fill)) + "%";
 }
 
-amountRange.max = String(SCALE.length);
-amountRange.addEventListener("input", ()=>{
-  selectedIndex = Number(amountRange.value);
-  updateUI();
-});
-
-tierPills.addEventListener("click", (e)=>{
-  const t = e.target?.dataset?.tier;
-  if(!t) return;
-  const idx = SCALE.findIndex(x=>x.tier===t);
-  if(idx>=0){
-    selectedIndex = idx+1;
-    amountRange.value = String(selectedIndex);
+document.querySelectorAll(".apill").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    amountRange.value = b.getAttribute("data-amt");
     updateUI();
-    toast(`Escala ${t.toUpperCase()} seleccionada`);
-  }
+  });
 });
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    tier = t.getAttribute("data-tier");
+    updateUI();
+  });
+});
+amountRange.addEventListener("input", updateUI);
 
-updateUI();
+/* =========================
+   Antifraude: 1 chance / día
+   ========================= */
+const SALT = "bet300-beneficio-progresivo-v1";
 
-/* ================= 1 CHANCE + CÓDIGO ================= */
-const SALT = "bet300-benefit-v2";
-function todayKey(){
-  const n=new Date();
-  return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
-}
-function tsString(d=new Date()){
-  const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear();
-  const hh=String(d.getHours()).padStart(2,'0'),mi=String(d.getMinutes()).padStart(2,'0');
-  return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
-}
 function ensureDeviceId(){
-  let id = localStorage.getItem("device_id");
+  let id = localStorage.getItem("bp_device_id");
   if(!id){
     id = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2,10)}`);
-    localStorage.setItem("device_id", id);
+    localStorage.setItem("bp_device_id", id);
   }
   return id;
 }
@@ -703,245 +632,191 @@ async function sha256hex(msg){
   const buf = await crypto.subtle.digest("SHA-256", enc);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
-async function makeCode(min, pct){
-  const base = `${DEVICE_ID}|${todayKey()}|pc:${pcMatch}|min:${min}|pct:${pct}|${SALT}`;
+async function makeCode(amount, pct, tier){
+  const base = `${DEVICE_ID}|${todayKey()}|${amount}|${pct}|${tier}|pc:${pcMatch}|${SALT}`;
   const hex = await sha256hex(base);
   return hex.slice(0,10).toUpperCase();
 }
-function dailyResetIfNeeded(){
-  const d = localStorage.getItem("benefit_date");
-  const t = todayKey();
-  if(!d){
-    localStorage.setItem("benefit_date", t);
-    return;
-  }
-  if(d !== t){
-    localStorage.setItem("benefit_date", t);
-    localStorage.removeItem("benefit_done");
-    localStorage.removeItem("benefit_payload");
+
+function restoreDaily(){
+  const stored = localStorage.getItem("bp_date");
+  const today = todayKey();
+  if(stored && stored !== today){
+    localStorage.removeItem("bp_done");
+    localStorage.removeItem("bp_data");
+    localStorage.setItem("bp_date", today);
+  }else if(!stored){
+    localStorage.setItem("bp_date", today);
   }
 }
-dailyResetIfNeeded();
 
-/* ================= SONIDO ================= */
-let soundOn = true;
-const soundToggle = document.getElementById("soundToggle");
-const soundState  = document.getElementById("soundState");
+function refreshDoneState(){
+  const done = localStorage.getItem("bp_done")==="1";
+  if(done){
+    chanceLabel.textContent = "0 chance";
+    doneLine.textContent = "Ya usaste tu chance hoy.";
+    genBtn.textContent = "✅ Chance usada";
+    genBtn.disabled = true;
+    waBtn.disabled = false;
 
-const AudioKit = (()=> {
-  const Ctx = window.AudioContext || window.webkitAudioContext;
-  const ctx = new Ctx();
-  let unlocked=false;
-  function unlock(){ if(!unlocked){ ctx.resume().catch(()=>{}); unlocked=true; } }
-  function blip(freq=900,dur=0.05,vol=0.05,type="sine"){
-    const o=ctx.createOscillator(), g=ctx.createGain();
-    o.type=type; o.frequency.value=freq;
-    g.gain.value=0;
-    o.connect(g).connect(ctx.destination);
-    const t=ctx.currentTime;
-    g.gain.linearRampToValueAtTime(vol, t+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
-    o.start(t); o.stop(t+dur);
+    const saved = JSON.parse(localStorage.getItem("bp_data") || "null");
+    if(saved){
+      lastCode.textContent = saved.code || "—";
+      lastTs.textContent = saved.ts || "—";
+    }
+  }else{
+    chanceLabel.textContent = "1 chance";
+    doneLine.textContent = "Aún no usaste tu chance hoy.";
+    genBtn.textContent = "🧾 Generar código";
+    genBtn.disabled = false;
+    waBtn.disabled = true;
+    lastCode.textContent = "—";
+    lastTs.textContent = "—";
   }
-  function ok(){ [660,880,1100].forEach((f,i)=>setTimeout(()=>blip(f,0.08,0.06,"triangle"), i*90)); }
-  function no(){ blip(220,0.10,0.06,"square"); }
-  return {unlock, ok, no};
-})();
-document.addEventListener("click", ()=>AudioKit.unlock(), {once:true});
-soundToggle.addEventListener("click", ()=>{
-  soundOn=!soundOn;
-  soundState.textContent = soundOn ? "ON" : "OFF";
-});
+}
 
-/* ================= GENERATE / CLAIM / MODAL ================= */
-const btnGenerate = document.getElementById("btnGenerate");
-const btnClaim = document.getElementById("btnClaim");
+/* =========================
+   WhatsApp text
+   ========================= */
+function whatsappText(data){
+  // texto “operativo” (sin prometer de más)
+  return `Hola! Generé mi código de Beneficio Progresivo.\n\n• Monto: ${money(data.amount)}\n• Beneficio estimado: +${data.pct}%\n• Nivel: ${data.tier.toUpperCase()}\n• Código: ${data.code}\n• Fecha/Hora: ${data.ts}\n\nQuiero validarlo para mi próxima carga.`;
+}
 
-const codeLabel = document.getElementById("codeLabel");
-const tsLabel = document.getElementById("tsLabel");
+/* =========================
+   Modal helpers
+   ========================= */
+function openModal(data){
+  mBenefit.textContent = `+${data.pct}%`;
+  mAmount.textContent = money(data.amount);
+  mCode.textContent = data.code;
+  mTs.textContent = data.ts;
 
-const modal = document.getElementById("modal");
-const mClose = document.getElementById("mClose");
-const mBenefit = document.getElementById("mBenefit");
-const mMin = document.getElementById("mMin");
-const mCode = document.getElementById("mCode");
-const mTs = document.getElementById("mTs");
-const mWa = document.getElementById("mWa");
+  copyBtn.onclick = async ()=>{
+    try{
+      await navigator.clipboard.writeText(data.code);
+      showToast("Copiado ✅");
+      ping();
+    }catch(e){
+      showToast("No se pudo copiar");
+    }
+  };
 
-function openModal(){ modal.classList.add("show"); }
+  mWA.onclick = ()=>{
+    const msg = whatsappText(data);
+    location.href = `https://wa.me/${WP}?text=${encodeURIComponent(msg)}`;
+  };
+
+  mEnter.onclick = ()=> window.open(PLATFORM_LINK, "_blank");
+
+  modal.classList.add("show");
+}
 function closeModal(){ modal.classList.remove("show"); }
-mClose.onclick = closeModal;
+mCloseX.onclick = closeModal;
 modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
 
-function buildMessage(payload){
-  const name = USER ? ` ${USER}` : "";
-  return [
-    `Hola${name}, te habla BET300 👋`,
-    `Te activé un Beneficio Progresivo: +${payload.pct}% con carga mínima ${money(payload.min)}.`,
-    `Código: ${payload.code} · ${payload.ts}`,
-    `Link: ${ENTER_URL}`
-  ].join("\n");
+function showToast(text){
+  toast.textContent = text;
+  toast.style.display="block";
+  clearTimeout(window.__tto);
+  window.__tto = setTimeout(()=>toast.style.display="none", 1400);
 }
 
-function doWA(payload){
-  if(!WP){
-    alert("WhatsApp no configurado (dejé genérico). Luego completás WP_NUMBERS.");
+/* =========================
+   Botones dock
+   ========================= */
+enterBtn.onclick = ()=> window.open(PLATFORM_LINK, "_blank");
+
+waBtn.onclick = ()=>{
+  const saved = JSON.parse(localStorage.getItem("bp_data") || "null");
+  if(!saved){
+    alert("Primero generá el código.");
     return;
   }
-  const msg = buildMessage(payload);
+  const msg = whatsappText(saved);
   location.href = `https://wa.me/${WP}?text=${encodeURIComponent(msg)}`;
-}
+};
 
-function setPayloadUI(payload){
-  codeLabel.textContent = payload.code;
-  tsLabel.textContent = payload.ts;
-
-  mBenefit.textContent = `+${payload.pct}%`;
-  mMin.textContent = money(payload.min);
-  mCode.textContent = payload.code;
-  mTs.textContent = payload.ts;
-
-  btnClaim.disabled = false;
-  btnClaim.onclick = ()=> doWA(payload);
-  mWa.onclick = ()=> doWA(payload);
-}
-
-function restoreIfAny(){
-  const done = localStorage.getItem("benefit_done")==="1";
-  const raw = localStorage.getItem("benefit_payload");
-  if(done && raw){
-    try{
-      const payload = JSON.parse(raw);
-      setPayloadUI(payload);
-      document.getElementById("luxTag").textContent = "✅ Chance usada hoy";
-    }catch{}
-  }
-}
-restoreIfAny();
-
-btnGenerate.addEventListener("click", async ()=>{
-  if(localStorage.getItem("benefit_done")==="1"){
-    if(soundOn) AudioKit.no();
-    toast("Ya usaste tu chance de hoy");
-    openModalAlreadyUsed();
+genBtn.onclick = async ()=>{
+  restoreDaily();
+  if(localStorage.getItem("bp_done")==="1"){
+    alert("Ya usaste tu chance hoy.");
     return;
   }
 
-  const item = SCALE[selectedIndex-1];
-  const code = await makeCode(item.min, item.pct);
+  const amount = Number(amountRange.value);
+  const { pct } = calcBenefit(amount, tier);
+  const code = await makeCode(amount, pct, tier);
   const ts = tsString(new Date());
 
-  const payload = {min:item.min, pct:item.pct, code, ts, pc:pcMatch, user: USER || ""};
+  const data = { amount, pct, tier, code, ts, pc: pcMatch };
 
-  localStorage.setItem("benefit_done","1");
-  localStorage.setItem("benefit_payload", JSON.stringify(payload));
+  localStorage.setItem("bp_done","1");
+  localStorage.setItem("bp_data", JSON.stringify(data));
 
-  document.getElementById("luxTag").textContent = "✅ Chance usada hoy";
-  if(soundOn) AudioKit.ok();
+  refreshDoneState();
+  ping();
+  openModal(data);
+};
 
-  setPayloadUI(payload);
-  openModal();
-});
-
-function openModalAlreadyUsed(){
-  const raw = localStorage.getItem("benefit_payload");
-  if(raw){
-    try{
-      const payload = JSON.parse(raw);
-      setPayloadUI(payload);
-      openModal();
-      return;
-    }catch{}
-  }
-  alert("Ya usaste tu chance de hoy.");
-}
-
-/* ================= COUNTDOWN ================= */
+/* =========================
+   Countdown (fin del día)
+   ========================= */
 function endOfDay(){
-  const n=new Date();
-  return new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23,59,0,0).getTime();
+  const n = new Date();
+  const end = new Date(n.getFullYear(),n.getMonth(),n.getDate(),23,59,0,0).getTime();
+  return end > Date.now() ? end : new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,23,59,0,0).getTime();
 }
 function tickCountdown(){
   const ms = endOfDay() - Date.now();
   const total = Math.max(0, Math.floor(ms/1000));
-  const h=Math.floor(total/3600), m=Math.floor((total%3600)/60), s=total%60;
+  const h = Math.floor(total/3600), m = Math.floor((total%3600)/60), s = total%60;
   document.getElementById("countdown").textContent =
-    h>0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` :
-          `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-tickCountdown();
-setInterval(tickCountdown, 1000);
-
-/* ================= TOAST ================= */
-const toastEl = document.getElementById("toast");
-let toastTO=null;
-function toast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add("show");
-  clearTimeout(toastTO);
-  toastTO = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+    h>0 ? `${h}:${pad2(m)}:${pad2(s)}` : `${pad2(m)}:${pad2(s)}`;
 }
 
-/* ================= PARTÍCULAS ================= */
-(function particles(){
-  const c = document.getElementById("fx");
-  const ctx = c.getContext("2d");
-  const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-
-  let W=0,H=0, pts=[];
-  function resize(){
-    W = Math.floor(innerWidth * DPR);
-    H = Math.floor(innerHeight * DPR);
-    c.width = W; c.height = H;
-    pts = Array.from({length: 76}, ()=>({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      r: (Math.random()*1.7 + 0.45)*DPR,
-      a: Math.random()*0.30 + 0.06,
-      vx: (Math.random()*0.20 + 0.05)*DPR,
-      vy: (Math.random()*0.18 + 0.04)*DPR
-    }));
+/* =========================
+   Snow (suave)
+   ========================= */
+function spawnSnow(){
+  const wrap = document.getElementById("snow");
+  wrap.innerHTML = "";
+  const n = 20;
+  for(let i=0;i<n;i++){
+    const d = document.createElement("i");
+    const left = Math.random()*100;
+    const size = 3 + Math.random()*4;
+    const dur = 5 + Math.random()*7;
+    const delay = Math.random()*3;
+    d.style.left = left + "vw";
+    d.style.width = size + "px";
+    d.style.height = size + "px";
+    d.style.opacity = (0.25 + Math.random()*0.55).toFixed(2);
+    d.style.animationDuration = dur + "s";
+    d.style.animationDelay = delay + "s";
+    wrap.appendChild(d);
   }
-  resize();
-  addEventListener("resize", ()=>{
-    clearTimeout(window.__pTo);
-    window.__pTo = setTimeout(resize, 140);
-  });
+  setInterval(()=>{
+    // refresca suavemente
+    spawnSnow();
+  }, 9000);
+}
 
-  function draw(){
-    ctx.clearRect(0,0,W,H);
+/* =========================
+   Init
+   ========================= */
+function init(){
+  // si el logo no se ve, es porque no existe la ruta. Cambiá "logo.svg" por tu archivo real.
+  // ejemplo: "assets/bet300_navidad.svg"
+  restoreDaily();
+  updateUI();
+  refreshDoneState();
+  tickCountdown();
+  setInterval(tickCountdown,1000);
 
-    const g1 = ctx.createRadialGradient(W*0.22,H*0.08,0, W*0.22,H*0.08, Math.max(W,H)*0.7);
-    g1.addColorStop(0, "rgba(255,45,45,.10)");
-    g1.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
-
-    const g2 = ctx.createRadialGradient(W*0.88,H*0.10,0, W*0.88,H*0.10, Math.max(W,H)*0.65);
-    g2.addColorStop(0, "rgba(245,211,123,.08)");
-    g2.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g2; ctx.fillRect(0,0,W,H);
-
-    for(const p of pts){
-      p.x += p.vx; p.y += p.vy;
-      if(p.x>W+20) p.x=-20;
-      if(p.y>H+20) p.y=-20;
-
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(245,211,123,${p.a})`;
-      ctx.fill();
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-/* ================= LOGO FALLBACK (si no carga) ================= */
-(function logoFallback(){
-  const img = document.getElementById("logoImg");
-  const box = document.getElementById("logoBox");
-  img.addEventListener("error", ()=> box.classList.add("is-fallback"));
-})();
+  spawnSnow();
+}
+init();
 </script>
 </body>
 </html>
