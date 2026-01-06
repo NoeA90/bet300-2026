@@ -1,420 +1,984 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>BET300 · Ruleta</title>
-<meta name="theme-color" content="#0b0f1e"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>BET300 · Beneficio Progresivo</title>
+<meta name="theme-color" content="#070a14"/>
+
 <style>
 :root{
-  --bg:#0b0f1e; --panel:#121634; --panel2:#0f1330; --border:#1e2150;
-  --text:#e8ebff; --muted:#b7b9d6; --ok:#25D366; --pointer:#22d3ee;
+  --bg:#070a14;
+  --bg2:#0b1020;
+
+  --panel: rgba(255,255,255,.06);
+  --panel2: rgba(255,255,255,.04);
+
+  --border: rgba(255,255,255,.10);
+  --border2: rgba(255,255,255,.16);
+
+  --text:#eef2ff;
+  --muted:#b7c0e6;
+  --muted2:#93a0d7;
+
+  --gold:#f5d37b;
+  --gold2:#b18b3d;
+
+  --red:#ff2d2d;   /* rojo brillante */
+  --red2:#ff4b4b;
+
+  --wa:#25D366;
+
+  --shadow: 0 18px 60px rgba(0,0,0,.55);
+  --shadow2: 0 14px 30px rgba(0,0,0,.35);
+
+  --radius: 18px;
+  --radius2: 22px;
+
+  --maxw: 1080px;
 }
-*{box-sizing:border-box} html,body{height:100%}
-body{margin:0;color:var(--text);background:var(--bg);font:16px/1.35 system-ui,-apple-system,Segoe UI,Roboto}
-body::before{content:"";position:fixed;inset:0;z-index:-2;background:
-  radial-gradient(900px 500px at 50% -10%, rgba(101,74,255,.25), transparent),
-  radial-gradient(700px 350px at 100% 0%, rgba(0,209,255,.18), transparent),
-  linear-gradient(180deg,#0b0f1e 0%,#0b0f1e 60%,#0a0d20 100%);
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:var(--text);
+  font: 15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;
+  background:
+    radial-gradient(900px 520px at 15% -10%, rgba(255,45,45,.20), transparent 60%),
+    radial-gradient(900px 520px at 92% 0%, rgba(245,211,123,.16), transparent 56%),
+    radial-gradient(980px 640px at 60% 120%, rgba(140,160,255,.12), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 55%, #070a14 100%);
+  overflow-x:hidden;
 }
-.container{max-width:980px;margin:14px auto;padding:0 14px 92px}
-.card{background: radial-gradient(120% 100% at 50% 0%, rgba(124,77,255,.08), transparent), var(--panel2);
-  border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 15px 40px rgba(0,0,0,.35)}
-@media(max-width:520px){.container{padding:0 0 92px}.card{border-radius:0;border-left:0;border-right:0;padding:14px}}
-.head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.brand{height:28px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
-.pill{background:linear-gradient(90deg,rgba(124,77,255,.15),rgba(0,209,255,.15));border:1px solid var(--border);
-  border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
-.pill.time{display:flex;gap:8px;align-items:center}
-.pill.sound{cursor:pointer;user-select:none}
-.count{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:rgba(255,204,0,.15);
-  border:1px solid rgba(255,204,0,.35);color:#ffe27a;font-weight:700;font-variant-numeric:tabular-nums}
 
-.grid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
-@media(min-width:900px){.grid{grid-template-columns:1.15fr .85fr}}
+.fx{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.75;}
+.fx canvas{width:100%; height:100%; display:block}
 
-.stage{position:relative;display:flex;align-items:center;justify-content:center}
-.wrap{width:100%;max-width:520px;margin:auto;position:relative}
-canvas{width:100%;height:auto;display:block}
-.pointer{position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:26px solid var(--pointer);z-index:2;
-  filter:drop-shadow(0 4px 10px rgba(34,211,238,.35))}
-@media(max-width:420px){.pointer{border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:22px solid var(--pointer);top:4px}}
-
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px}
-.center{text-align:center}
-h1,h2,h3,p{margin:0 0 8px} h1{font-size:24px} .muted{color:var(--muted)}
-.stat{display:flex;gap:12px;align-items:center;justify-content:center;margin:8px 0 14px}
-.badge{min-width:72px;height:46px;border-radius:12px;background:radial-gradient(100% 100% at 50% 0%, rgba(0,209,255,.35), rgba(124,77,255,.35));
-  display:grid;place-items:center;font-weight:800;font-size:18px;box-shadow:inset 0 0 10px rgba(124,77,255,.35)}
-.smallline{font-size:12px;color:var(--muted);margin-top:4px}
-
-/* Bloque plataforma */
-.promo{display:grid;grid-template-columns:1fr minmax(200px,260px);align-items:center;gap:12px;margin-top:10px;padding:12px;border:1px dashed var(--border);border-radius:12px}
-.promo.expired{border-color:rgba(255,107,107,.5)}
-.promo .copy{display:grid;gap:4px}
-.promo .eyebrow{padding:2px 8px;border-radius:999px;border:1px solid rgba(255,204,0,.35);background:rgba(255,204,0,.12);color:#ffe27a;font-weight:700;font-size:12px;width:max-content}
-.btn.play{display:inline-flex;gap:10px;align-items:center;justify-content:center;padding:14px 16px;border-radius:12px;font-weight:800;
-  background:linear-gradient(90deg,#ffd166,#ff7ab6);color:#0a0f20;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-@media(max-width:520px){.promo{grid-template-columns:1fr}.btn.play{width:100%}}
-
-/* Dock inferior */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:10;background:linear-gradient(180deg, rgba(11,15,30,0) 0%, rgba(11,15,30,.85) 22%, rgba(11,15,30,.95) 100%);
-  padding:10px 16px 14px;display:flex;gap:12px;align-items:center}
-.btn{appearance:none;border:none;cursor:pointer;padding:14px 16px;border-radius:14px;font-weight:800;background:linear-gradient(90deg,#6c59ff,#00d1ff);color:#0a0f20;width:100%;
-  box-shadow:0 8px 20px rgba(0,0,0,.35)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn.ok{background:#25D366;color:#0b0f1e}
-
-/* Naranja para “Girar” */
-#spinBtn{ background: linear-gradient(90deg,#FF9A3D,#FF5C39); color:#0b0f1e; }
-#spinBtn:disabled{ background: linear-gradient(90deg,#FFBC82,#FF8C78); }
-
-/* Confetti */
-.confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
-.confetti i{
-  position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;opacity:0;
-  animation:confFall 1.6s linear forwards;
+.container{max-width:var(--maxw); margin:18px auto 96px; padding:0 12px;}
+.shell{
+  border:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow);
+  overflow:hidden;
 }
-@keyframes confFall{
-  8%{opacity:1}
-  100%{transform:translateY(110vh) rotate(360deg);opacity:0}
+
+/* Header */
+.topbar{
+  display:flex; align-items:center; gap:12px;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(120% 120% at 10% 0%, rgba(255,45,45,.22), transparent 55%),
+    radial-gradient(120% 120% at 90% 0%, rgba(245,211,123,.18), transparent 55%),
+    rgba(0,0,0,.18);
+  backdrop-filter: blur(12px);
+}
+
+.brand{display:flex; align-items:center; gap:10px; min-width: 220px;}
+.logo{
+  width:56px; height:46px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  box-shadow: 0 12px 35px rgba(0,0,0,.35);
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.logo img,.logo svg{width:100%; height:100%; object-fit:contain; padding:7px; display:block;}
+.brandTxt{line-height:1.05}
+.brandTxt b{display:block; letter-spacing:.7px; font-size:14px}
+.brandTxt span{display:block; color:var(--muted2); font-size:12px; letter-spacing:.18em; text-transform:uppercase}
+
+.pills{display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1;}
+.pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 9px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+  color: var(--muted);
+  font-size:12px;
+}
+.pill strong{color:var(--text); font-variant-numeric: tabular-nums}
+.pill.btnlike{cursor:pointer; user-select:none}
+.pill:hover{border-color: rgba(255,255,255,.18)}
+.pills .spacer{flex:1}
+
+.headerCta{display:flex; align-items:center; gap:10px;}
+.headerBtn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  text-decoration:none;
+  font-weight:950;
+  box-shadow: var(--shadow2);
+  transition: transform .08s ease, filter .08s ease;
+  user-select:none;
+}
+.headerBtn:hover{transform: translateY(-1px); filter: brightness(1.05)}
+.headerBtn:active{transform: translateY(0)}
+.headerBtn.alt{
+  background: rgba(0,0,0,.20);
+  color: var(--text);
+}
+.headerBtn.main{
+  background: linear-gradient(90deg, rgba(255,45,45,.98), rgba(255,75,75,.96));
+  color:#12060a;
+}
+
+@media(max-width:860px){
+  .brand{min-width:unset}
+  .brandTxt span{display:none}
+}
+@media(max-width:720px){
+  .headerCta{display:none}
+}
+
+/* Layout */
+.grid{
+  display:grid;
+  grid-template-columns: 1.12fr .88fr;
+  gap: 12px;
+  padding: 12px;
+}
+@media(max-width:940px){ .grid{grid-template-columns:1fr;} }
+
+.panel{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+.panel .inner{padding: 14px}
+
+.panelTitle{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+  margin-bottom:10px;
+}
+.panelTitle h1{margin:0; font-size:22px; letter-spacing:.2px}
+.panelTitle p{margin:6px 0 0; color:var(--muted); font-size:13px}
+.badgeLux{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(245,211,123,.25);
+  background: rgba(245,211,123,.08);
+  color: var(--gold);
+  font-weight:900;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+/* Hero (más pro) */
+.hero{
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(120% 120% at 15% 0%, rgba(255,45,45,.18), transparent 55%),
+    radial-gradient(120% 120% at 92% 10%, rgba(245,211,123,.14), transparent 55%),
+    radial-gradient(80% 80% at 50% 120%, rgba(120,150,255,.10), transparent 55%),
+    rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 14px;
+  position:relative;
+  overflow:hidden;
+}
+.hero:before{
+  content:"";
+  position:absolute; inset:-1px;
+  background: linear-gradient(120deg, rgba(255,45,45,.22), rgba(245,211,123,.14), rgba(120,150,255,.12));
+  opacity:.18;
+  filter: blur(18px);
+  pointer-events:none;
+}
+.hero > *{position:relative; z-index:1;}
+
+.row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+@media(max-width:560px){ .row2{grid-template-columns:1fr} }
+
+.kpi{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+  border-radius: 16px;
+  padding: 12px;
+  transition: transform .12s ease, border-color .12s ease;
+}
+.kpi:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.16);}
+.kpi .k{color:var(--muted2); font-size:12px}
+.kpi .v{font-size:19px; font-weight:1000; margin-top:4px}
+.kpi .sub{color:var(--muted); font-size:12px; margin-top:3px}
+
+/* Selector */
+.selector{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  border-radius: 18px;
+  padding: 12px;
+}
+.selectorHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+.selectorHead .left b{display:block; font-size:14px}
+.selectorHead .left span{display:block; font-size:12px; color:var(--muted)}
+
+.tierPills{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+.tier{
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  font-size:12px;
+  color: var(--muted);
+  cursor:pointer;
+  user-select:none;
+  transition: transform .08s ease, border-color .12s ease, background .12s ease;
+}
+.tier:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.16);}
+.tier.active{
+  border-color: rgba(245,211,123,.30);
+  background: rgba(245,211,123,.10);
+  color: var(--gold);
+  font-weight:1000;
+}
+
+.rangeWrap{margin-top:6px;}
+input[type="range"]{width:100%; accent-color: var(--red);}
+
+.scale{
+  display:flex; justify-content:space-between;
+  font-size:11px; color:var(--muted2);
+  margin-top:6px;
+}
+.progress{
+  margin-top:10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.progress > i{
+  display:block; height:100%;
+  width: 30%;
+  background: linear-gradient(90deg, rgba(255,45,45,.95), rgba(245,211,123,.85));
+  border-radius:999px;
+}
+
+.note{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  border-radius: 16px;
+  padding: 12px;
+  color: var(--muted);
+  font-size:12px;
+}
+.note b{color:var(--text)}
+
+hr.sep{border:none; border-top:1px solid rgba(255,255,255,.08); margin:12px 0 0;}
+
+/* Right summary */
+.summaryCard{display:grid; gap:10px;}
+.big{
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(120% 120% at 30% 0%, rgba(255,45,45,.14), transparent 55%),
+    radial-gradient(120% 120% at 90% 20%, rgba(245,211,123,.12), transparent 55%),
+    rgba(0,0,0,.20);
+  border-radius: 18px;
+  padding: 14px;
+}
+.big h2{margin:0; font-size:16px; letter-spacing:.2px}
+.big .desc{margin-top:6px; color:var(--muted); font-size:13px}
+.big .line{
+  margin-top:10px;
+  display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  color: var(--muted2);
+  font-size:12px;
+}
+.big .line b{color:var(--text)}
+.codeBox{
+  margin-top:10px;
+  border-radius: 14px;
+  border:1px dashed rgba(255,255,255,.18);
+  background: rgba(0,0,0,.18);
+  padding: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size:12px;
+}
+.codeBox b{color:var(--text)}
+
+/* Dock */
+.dock{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  z-index:50;
+  padding: 10px 12px 14px;
+  background: linear-gradient(180deg, rgba(7,10,20,0) 0%, rgba(7,10,20,.72) 25%, rgba(7,10,20,.92) 100%);
+  backdrop-filter: blur(12px);
+}
+.dockInner{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display:flex; gap:10px;
+}
+.btn{
+  width:100%;
+  border:none;
+  border-radius: 16px;
+  padding: 14px 14px;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow: var(--shadow2);
+  transition: transform .08s ease, filter .08s ease;
+}
+.btn:hover{transform: translateY(-1px); filter: brightness(1.04)}
+.btn:active{transform: translateY(0)}
+.btn:disabled{opacity:.55; cursor:not-allowed; filter:none; transform:none}
+
+.btn.claim{background: linear-gradient(90deg, var(--wa), #7CFFB1); color:#07110a;}
+.btn.enter{background: linear-gradient(90deg, rgba(255,45,45,.98), rgba(255,75,75,.96)); color:#12060a;}
+.btn.ghost{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow: none;
+}
+
+.toast{
+  position:fixed; left:50%; bottom:92px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.14);
+  padding: 10px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size:12px;
+  opacity:0; pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
+  backdrop-filter: blur(10px);
+  z-index:80;
+}
+.toast.show{opacity:1; transform: translateX(-50%) translateY(-6px);}
+
+/* Modal */
+.modal{
+  position:fixed; inset:0;
+  display:none;
+  align-items:center; justify-content:center;
+  background: rgba(0,0,0,.55);
+  z-index:100;
+  padding: 18px;
+  backdrop-filter: blur(6px);
+}
+.modal.show{display:flex}
+.modalCard{
+  width: min(520px, 92vw);
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    radial-gradient(120% 120% at 30% 0%, rgba(255,45,45,.16), transparent 55%),
+    radial-gradient(120% 120% at 90% 20%, rgba(245,211,123,.14), transparent 55%),
+    rgba(10,12,22,.88);
+  box-shadow: 0 24px 70px rgba(0,0,0,.60);
+  overflow:hidden;
+}
+.modalHead{
+  display:flex; align-items:center; gap:10px;
+  padding: 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.modalHead h3{margin:0; font-size:16px}
+.modalHead .x{
+  margin-left:auto;
+  width:38px; height:38px;
+  border-radius: 12px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  display:grid; place-items:center;
+  cursor:pointer;
+  user-select:none;
+}
+.modalBody{padding:14px}
+.modalRow{
+  display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  border:1px dashed rgba(255,255,255,.16);
+  background: rgba(0,0,0,.18);
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom:10px;
+}
+.modalRow .k{color:var(--muted2); font-size:12px}
+.modalRow .v{font-weight:1000}
+.modalActions{display:flex; gap:10px; margin-top:10px}
+.modalActions .btn{box-shadow:none}
+
+@media(max-width:640px){
+  .dockInner{flex-direction:column}
 }
 </style>
 </head>
-<body>
 
-<!-- papelitos -->
-<div id="confetti" class="confetti" aria-hidden="true"></div>
+<body>
+<div class="fx" aria-hidden="true"><canvas id="fx"></canvas></div>
+<div id="toast" class="toast"></div>
 
 <div class="container">
-  <div class="card">
-    <div class="head">
-      <img class="brand" src="img/logo-bet300.svg" alt="BET300" onerror="this.outerHTML='<strong>BET300</strong>'">
-      <span class="pill">Promo interactiva</span>
-      <span class="pill time">⚡ Tiempo limitado <span class="count" id="countdown">--:--</span></span>
-      <span class="pill sound" id="soundToggle">🔊 Sonido: <b id="soundState">ON</b></span>
-    </div>
-
-    <div class="grid">
-      <div class="panel">
-        <div class="stage">
-          <div class="wrap">
-            <canvas id="wheel" width="620" height="620"></canvas>
-            <div class="pointer" aria-hidden="true"></div>
-          </div>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" title="Logo BET300">
+          <!-- =================================================
+               LOGO PLACEHOLDER
+               Recomendado: SVG. Si es PNG/WebP: mínimo 256x256 (ideal 512x512)
+               Archivo sugerido: logo.svg (o logo.png) en el mismo directorio.
+               ================================================= -->
+          <img id="logoImg" src="logo.svg" alt="BET300"/>
+        </div>
+        <div class="brandTxt">
+          <b>BET300</b>
+          <span>beneficio progresivo</span>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="center">
-          <div class="stat">
-            <div>
-              <div class="badge" id="badge">-</div>
-              <div class="smallline" id="stampLine" aria-live="polite"></div>
-            </div>
-            <div>
-              <h1 id="title">Tenés 1 giro disponible</h1>
-              <p class="muted" id="subtitle">Los premios se acreditan con tu <b>próxima carga mínima</b>.</p>
-            </div>
-          </div>
-        </div>
+      <div class="pills">
+        <span class="pill">✨ Activación diaria</span>
+        <span class="pill">⏳ Tiempo limitado: <strong id="countdown">--:--</strong></span>
+        <span class="pill btnlike" id="soundToggle">🔊 Sonido: <strong id="soundState">ON</strong></span>
+        <span class="pill">🧩 PC: <strong id="pcLabel">1</strong></span>
+        <span class="spacer"></span>
 
-        <div class="promo" id="promoBox">
-          <div class="copy">
-            <span class="eyebrow">Acceso especial</span>
-            <strong>Tiempo limitado.</strong>
-            <span class="muted">Entrá y participá antes de que termine.</span>
-          </div>
-          <a id="playNow" class="btn play" target="_blank" rel="noopener">
-            <span class="icon">🎮</span>
-            <span class="label">Entrar a la plataforma</span>
-          </a>
+        <div class="headerCta">
+          <a class="headerBtn alt" id="headerEnter" target="_blank" rel="noopener">🎮 Entrar</a>
+          <a class="headerBtn main" id="headerClaim" href="javascript:void(0)">📲 Reclamar</a>
         </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <section class="panel">
+        <div class="inner">
+          <div class="panelTitle">
+            <div>
+              <h1 id="hTitle">Beneficio Progresivo</h1>
+              <p id="hSub">Elegí tu nivel según tu carga. El beneficio sube en tiempo real y se genera un código de activación.</p>
+            </div>
+            <div class="badgeLux" id="luxTag">⚡ 1 chance por día</div>
+          </div>
+
+          <div class="hero">
+            <div class="row2">
+              <div class="kpi">
+                <div class="k">Monto seleccionado</div>
+                <div class="v" id="kAmount">$ 10.000</div>
+                <div class="sub">Ajustalo según el usuario</div>
+              </div>
+              <div class="kpi">
+                <div class="k">Beneficio estimado</div>
+                <div class="v" id="kBenefit">+20%</div>
+                <div class="sub" id="kHint">Nivel Base · Activación rápida</div>
+              </div>
+            </div>
+
+            <div class="selector">
+              <div class="selectorHead">
+                <div class="left">
+                  <b>Elegí tu escala</b>
+                  <span>Más carga → mejor beneficio (sin azar)</span>
+                </div>
+                <div class="tierPills" id="tierPills">
+                  <div class="tier active" data-tier="base">Base</div>
+                  <div class="tier" data-tier="pro">Pro</div>
+                  <div class="tier" data-tier="max">Max</div>
+                </div>
+              </div>
+
+              <div class="rangeWrap">
+                <input id="amountRange" type="range" min="1" max="12" step="1" value="3" aria-label="Monto"/>
+                <div class="scale">
+                  <span>$5k</span><span>$10k</span><span>$20k</span><span>$35k</span><span>$50k</span><span>$75k</span>
+                </div>
+                <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+              </div>
+            </div>
+
+            <div class="note" id="noteBox">
+              <b>Cómo se activa:</b> seleccionás tu escala → generás tu código → elegís reclamo por WhatsApp o entrás directo.
+              <br/><br/>
+              <span style="color:var(--muted2)">*</span> El beneficio se acredita con tu próxima carga según condiciones vigentes.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="panel">
+        <div class="inner summaryCard">
+          <div class="big">
+            <h2 id="sumTitle">Tu beneficio listo para activar</h2>
+            <div class="desc" id="sumDesc">Confirmá para que quede registrado. Si preferís, entrá directo a la plataforma.</div>
+
+            <div class="line">
+              <div>Usuario: <b id="userLabel">—</b></div>
+              <div>Beneficio: <b id="benefitLabel">+20%</b></div>
+              <div>Mínimo: <b id="minLabel">$ 10.000</b></div>
+            </div>
+
+            <div class="codeBox" id="codeBox">
+              Código: <b id="codeLabel">—</b><br/>
+              Fecha/Hora: <b id="tsLabel">—</b>
+            </div>
+          </div>
+
+          <div class="note">
+            <b>Tip operativo:</b> para usuarios fuertes, empujá a <b>Pro</b> o <b>Max</b> (sube el % y el retorno).
+            <br/><br/>
+            Si ya usó la chance del día, el sistema lo bloquea automáticamente.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Dock -->
+<div class="dock">
+  <div class="dockInner">
+    <button class="btn ghost" id="btnGenerate">🧾 Generar código</button>
+    <button class="btn claim" id="btnClaim" disabled>📲 Reclamar por WhatsApp</button>
+    <button class="btn enter" id="btnEnter">🎮 Entrar a la plataforma</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modalHead">
+      <h3 id="mTitle">✅ Beneficio generado</h3>
+      <div class="x" id="mClose" aria-label="Cerrar">✖</div>
+    </div>
+    <div class="modalBody">
+      <div class="modalRow">
+        <div class="k">Beneficio</div>
+        <div class="v" id="mBenefit">—</div>
+      </div>
+      <div class="modalRow">
+        <div class="k">Mínimo</div>
+        <div class="v" id="mMin">—</div>
+      </div>
+      <div class="modalRow">
+        <div class="k">Código</div>
+        <div class="v" id="mCode">—</div>
+      </div>
+      <div class="modalRow">
+        <div class="k">Fecha/Hora</div>
+        <div class="v" id="mTs">—</div>
+      </div>
+
+      <div class="modalActions">
+        <button class="btn claim" id="mWa">📲 Reclamar por WhatsApp</button>
+        <button class="btn enter" id="mEnter">🎮 Entrar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Dock fijo -->
-<div class="dock">
-  <button id="spinBtn" class="btn">🎯 Girar</button>
-  <button id="claimBtn" class="btn ok" disabled>📲 Reclamar</button>
-</div>
-
 <script>
-/* ===== Premios: $ intercalado con % ===== */
-const MONEY_VALUES   = [2000,3000,4000,5000,3000,2000,5000,4000,1000];
-const PERCENT_VALUES = [10,20,30];
-const PRIZES = (()=>{const r=[];const m=Math.max(MONEY_VALUES.length,PERCENT_VALUES.length);
-  for(let i=0;i<m;i++){ if(i<MONEY_VALUES.length)r.push({type:'money',value:MONEY_VALUES[i]});
-    if(i<PERCENT_VALUES.length)r.push({type:'percent',value:PERCENT_VALUES[i]}); } return r; })();
-const COLORS=["#44e0ff","#7a5bff","#16e2b6","#ff6ad5","#ffd166","#4be1a0","#8ab6ff","#ff9bd1","#6ee7ff","#a78bfa","#34d39a","#ffa3e0","#ffe08a","#7ce1b9"];
+/* ==========================================================
+   CONFIG
+   ========================================================== */
 
-/* ===== WhatsApp / plataforma por pc ===== */
-/* 4 números y único link de plataforma */
-const WP_NUMBERS={
-  p1:"5491131583516",
-  p2:"5491126695257",
-  p3:"5491125368306",
-  p4:"5491150030414"
+// ✅ Link único para todas las PC
+const ENTER_URL = "https://bet300.biz";
+
+// ✅ WhatsApp genéricos (después reemplazás por reales)
+const WP_NUMBERS = {
+  pc1: "5491100000000",
+  pc2: "5491100000000",
+  pc3: "5491100000000",
+  pc4: "5491100000000",
+  pc5: "5491100000000"
 };
-const PLATFORM_LINK="https://alvg.bet300vip.com";
 
-const params=new URLSearchParams(location.search);
-const pc=params.get('pc'); // ?pc=1..4
-let WA=WP_NUMBERS.p1;
-if(pc==='2'){WA=WP_NUMBERS.p2}
-else if(pc==='3'){WA=WP_NUMBERS.p3}
-else if(pc==='4'){WA=WP_NUMBERS.p4}
-
-/* Para mantener el resto del código igual, usamos WP como alias de WA */
-const WP = WA;
-
-document.getElementById('playNow').href=PLATFORM_LINK;
-
-/* ===== Antifraude: device id + código + timestamp visibles ===== */
-const SALT = "bet300-ruleta-v1";
-function ensureDeviceId(){
-  let id = localStorage.getItem('device_id');
-  if(!id){ id = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2,8)}`); localStorage.setItem('device_id', id); }
-  return id;
+function normalizeWP(n){
+  const s = String(n||"").replace(/[^\d+]/g,"");
+  if(!s) return "";
+  return s.startsWith("+") ? s.slice(1) : s;
 }
-const DEVICE_ID = ensureDeviceId();
-function todayKey(){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`}
+
+// Params: ?pc=1..5 y opcional ?user=Nombre
+const params = new URLSearchParams(location.search);
+const pcParam = (params.get("pc")||"1").trim();
+const pcMatch = /^[1-5]$/.test(pcParam) ? pcParam : "1";
+const pcKey = "pc"+pcMatch;
+const USER = (params.get("user")||"").trim();
+
+document.getElementById("pcLabel").textContent = pcMatch;
+document.getElementById("userLabel").textContent = USER ? USER : "—";
+
+const WP = normalizeWP(WP_NUMBERS[pcKey] || "");
+
+// Header + Dock enter
+document.getElementById("headerEnter").href = ENTER_URL;
+document.getElementById("btnEnter").onclick = ()=> window.open(ENTER_URL, "_blank", "noopener");
+document.getElementById("mEnter").onclick   = ()=> window.open(ENTER_URL, "_blank", "noopener");
+
+/* ==========================================================
+   BENEFICIO PROGRESIVO (cap 50% como pediste antes)
+   - Podés ajustar estos escalones a gusto.
+   ========================================================== */
+const SCALE = [
+  {min:  5000, pct: 20, tier:"base"},
+  {min:  8000, pct: 22, tier:"base"},
+  {min: 10000, pct: 25, tier:"base"},
+  {min: 15000, pct: 30, tier:"pro"},
+  {min: 20000, pct: 35, tier:"pro"},
+  {min: 25000, pct: 38, tier:"pro"},
+  {min: 35000, pct: 42, tier:"max"},
+  {min: 50000, pct: 45, tier:"max"},
+  {min: 75000, pct: 50, tier:"max"},
+  {min:100000, pct: 50, tier:"max"},
+  {min:150000, pct: 50, tier:"max"},
+  {min:200000, pct: 50, tier:"max"},
+];
+
+const amountRange = document.getElementById("amountRange");
+const kAmount = document.getElementById("kAmount");
+const kBenefit = document.getElementById("kBenefit");
+const kHint = document.getElementById("kHint");
+const benefitLabel = document.getElementById("benefitLabel");
+const minLabel = document.getElementById("minLabel");
+const progressFill = document.getElementById("progressFill");
+const tierPills = document.getElementById("tierPills");
+
+let selectedIndex = Number(amountRange.value||3);
+
+function money(n){ return "$ " + Number(n).toLocaleString("es-AR"); }
+function tierText(t){
+  if(t==="base") return "Nivel Base · Activación rápida";
+  if(t==="pro")  return "Nivel Pro · Mejor retorno";
+  return "Nivel Max · Beneficio alto";
+}
+function setActiveTier(t){
+  [...tierPills.querySelectorAll(".tier")].forEach(el=>{
+    el.classList.toggle("active", el.dataset.tier===t);
+  });
+}
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+function updateUI(){
+  selectedIndex = clamp(selectedIndex, 1, SCALE.length);
+  const item = SCALE[selectedIndex-1];
+
+  kAmount.textContent = money(item.min);
+  kBenefit.textContent = `+${item.pct}%`;
+  kHint.textContent = tierText(item.tier);
+
+  benefitLabel.textContent = `+${item.pct}%`;
+  minLabel.textContent = money(item.min);
+
+  const pct = Math.round((selectedIndex / SCALE.length) * 100);
+  progressFill.style.width = pct + "%";
+
+  setActiveTier(item.tier);
+}
+
+amountRange.max = String(SCALE.length);
+amountRange.addEventListener("input", ()=>{
+  selectedIndex = Number(amountRange.value);
+  updateUI();
+});
+
+tierPills.addEventListener("click", (e)=>{
+  const t = e.target?.dataset?.tier;
+  if(!t) return;
+  const idx = SCALE.findIndex(x=>x.tier===t);
+  if(idx>=0){
+    selectedIndex = idx+1;
+    amountRange.value = String(selectedIndex);
+    updateUI();
+    toast(`Escala ${t.toUpperCase()} seleccionada`);
+  }
+});
+
+updateUI();
+
+/* ==========================================================
+   1 chance por día + código + timestamp
+   ========================================================== */
+const SALT = "bet300-benefit-v2";
+function todayKey(){
+  const n=new Date();
+  return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+}
 function tsString(d=new Date()){
   const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear();
   const hh=String(d.getHours()).padStart(2,'0'),mi=String(d.getMinutes()).padStart(2,'0');
   return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
 }
+function ensureDeviceId(){
+  let id = localStorage.getItem("device_id");
+  if(!id){
+    id = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2,10)}`);
+    localStorage.setItem("device_id", id);
+  }
+  return id;
+}
+const DEVICE_ID = ensureDeviceId();
+
 async function sha256hex(msg){
   const enc = new TextEncoder().encode(msg);
   const buf = await crypto.subtle.digest("SHA-256", enc);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
-async function makeClaimCode(prizeLabel){
-  const base = `${DEVICE_ID}|${todayKey()}|${prizeLabel}|pc:${pc||'0'}|${SALT}`;
+async function makeCode(min, pct){
+  const base = `${DEVICE_ID}|${todayKey()}|pc:${pcMatch}|min:${min}|pct:${pct}|${SALT}`;
   const hex = await sha256hex(base);
   return hex.slice(0,10).toUpperCase();
 }
+function dailyResetIfNeeded(){
+  const d = localStorage.getItem("benefit_date");
+  const t = todayKey();
+  if(!d){
+    localStorage.setItem("benefit_date", t);
+    return;
+  }
+  if(d !== t){
+    localStorage.setItem("benefit_date", t);
+    localStorage.removeItem("benefit_done");
+    localStorage.removeItem("benefit_payload");
+  }
+}
+dailyResetIfNeeded();
 
-/* ===== Audio (ticks + win) ===== */
-let soundOn=true;
-const soundToggle=document.getElementById('soundToggle');
-const soundState=document.getElementById('soundState');
-const AudioKit=(()=>{
-  const Ctx=window.AudioContext||window.webkitAudioContext;
-  const ctx=new Ctx(); let unlocked=false;
+/* ==========================================================
+   Sonido simple
+   ========================================================== */
+let soundOn = true;
+const soundToggle = document.getElementById("soundToggle");
+const soundState  = document.getElementById("soundState");
+
+const AudioKit = (()=> {
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new Ctx();
+  let unlocked=false;
   function unlock(){ if(!unlocked){ ctx.resume().catch(()=>{}); unlocked=true; } }
-  function click(freq=900,dur=0.04,vol=0.05){
-    const o=ctx.createOscillator(); const g=ctx.createGain();
-    o.type='square'; o.frequency.value=freq; g.gain.value=0; o.connect(g).connect(ctx.destination);
-    const t=ctx.currentTime; g.gain.linearRampToValueAtTime(vol, t+0.005); g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  function blip(freq=900,dur=0.05,vol=0.05,type="sine"){
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type; o.frequency.value=freq;
+    g.gain.value=0;
+    o.connect(g).connect(ctx.destination);
+    const t=ctx.currentTime;
+    g.gain.linearRampToValueAtTime(vol, t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
     o.start(t); o.stop(t+dur);
   }
-  function spinStart(){ const id=setInterval(()=>click(860+Math.random()*120,0.035,0.045),110); return ()=>clearInterval(id); }
-  function win(){ [880,1175,1568].forEach((f,i)=>setTimeout(()=>click(f,0.12,0.09), i*130)); }
-  return {ctx,unlock,spinStart,win};
+  function ok(){ [660,880,1100].forEach((f,i)=>setTimeout(()=>blip(f,0.08,0.06,"triangle"), i*90)); }
+  function no(){ blip(220,0.10,0.06,"square"); }
+  return {unlock, ok, no};
 })();
-soundToggle.addEventListener('click',()=>{ soundOn=!soundOn; soundState.textContent=soundOn?'ON':'OFF'; });
-
-/* ===== Canvas / ruleta ===== */
-const wheel=document.getElementById('wheel'), ctx=wheel.getContext('2d');
-const spinBtn=document.getElementById('spinBtn'), claimBtn=document.getElementById('claimBtn');
-const badge=document.getElementById('badge'), title=document.getElementById('title'), subtitle=document.getElementById('subtitle');
-const countdownEl=document.getElementById('countdown'), promoBox=document.getElementById('promoBox');
-const confetti = document.getElementById('confetti');
-const stampEl = document.getElementById('stampLine');
-
-let angle=0, spinning=false, cx,cy,r, cssW=0;
-
-const money=n=>"$"+n.toLocaleString("es-AR");
-const label=p=>p.type==='money'?money(p.value):(`${p.value}%`);
-const subtitleHTML=p=>p.type==='money'
-  ? `Recibís <b>${money(p.value)} extra</b> con tu próxima carga.`
-  : `Recibís un <b>${p.value}% extra</b> con tu próxima carga.`;
-
-/* WhatsApp con código + fecha/hora */
-function whatsappText(prizeLabel){
-  const code = localStorage.getItem('spin_code') || '(SIN-COD)';
-  const ts   = localStorage.getItem('spin_ts')   || tsString();
-  return `Hola, gané ${prizeLabel} en la ruleta y quiero reclamarlo con mi próxima carga. Código: ${code} · ${ts}`;
-}
-
-function getWrapWidth(){return Math.floor(document.querySelector('.wrap').getBoundingClientRect().width)}
-function setSize(){
-  const dpr=window.devicePixelRatio||1;
-  const w=Math.min(520,Math.max(280,getWrapWidth()));
-  cssW=w; wheel.width=Math.floor(w*dpr); wheel.height=Math.floor(w*dpr);
-  wheel.style.width=w+'px'; wheel.style.height=w+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);
-  cx=wheel.width/dpr/2; cy=wheel.height/dpr/2; r=Math.min(cx,cy)-10;
-}
-addEventListener('resize',()=>{clearTimeout(window.__wTo);window.__wTo=setTimeout(()=>{setSize()},120)})
-
-function draw(a){
-  ctx.clearRect(0,0,wheel.width,wheel.height);
-  const n=PRIZES.length, arc=Math.PI*2/n;
-  const font= cssW<=340?"700 20px system-ui,-apple-system,Segoe UI":
-               cssW<=380?"700 24px system-ui,-apple-system,Segoe UI":
-               cssW<=440?"700 28px system-ui,-apple-system,Segoe UI":"700 32px system-ui,-apple-system,Segoe UI";
-  for(let i=0;i<n;i++){
-    const s=a+i*arc, e=s+arc;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
-    ctx.fillStyle=COLORS[i%COLORS.length];ctx.fill();
-    ctx.strokeStyle="rgba(10,15,35,.35)";ctx.lineWidth=2;ctx.stroke();
-    const txt=label(PRIZES[i]);
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);
-    ctx.textAlign="right";ctx.fillStyle="#091024";ctx.font=font;
-    ctx.fillText(txt,r-18,10);ctx.restore();
-  }
-  // aro + luces
-  ctx.beginPath();ctx.lineWidth=Math.max(8,r*0.04);ctx.strokeStyle="#424864";ctx.arc(cx,cy,r*1.02,0,Math.PI*2);ctx.stroke();
-  const bulbs=54, rr=r*1.02, t=Date.now()/130;
-  for(let i=0;i<bulbs;i++){
-    const ang=i/bulbs*Math.PI*2; const x=cx+Math.cos(ang)*rr; const y=cy+Math.sin(ang)*rr;
-    const on=(Math.floor(t)%bulbs)===i;
-    ctx.beginPath();ctx.fillStyle=on?"rgba(220,235,255,1)":"rgba(220,235,255,.55)";
-    ctx.arc(x,y,Math.max(3,r*0.03),0,Math.PI*2);ctx.fill();
-  }
-  // centro
-  const rCenter=cssW<=360?Math.max(26,r*.085):cssW<=420?Math.max(30,r*.095):Math.max(34,r*.105);
-  ctx.beginPath();ctx.arc(cx,cy,rCenter,0,Math.PI*2);ctx.fillStyle="#0e1230";ctx.fill();
-  ctx.strokeStyle="rgba(124,77,255,.6)";ctx.lineWidth=Math.max(2,rCenter*.08);ctx.stroke();
-}
-// idle
-(function glow(){ draw(angle); requestAnimationFrame(glow); })();
-
-/* Ganador exacto por sector */
-function normAngle(rad){ const T = Math.PI * 2; return ((rad % T) + T) % T; }
-function winnerIndexByAngle(a){
-  const n = PRIZES.length;
-  const arc = (Math.PI * 2) / n;
-  const pointer = Math.PI * 1.5; // 12 en punto
-  const rel = normAngle(pointer - a);
-  const idx = Math.floor(rel / arc) % n;
-  return idx;
-}
-function animateTo(target,ms,cb){
-  const start=performance.now(),from=angle;
-  (function loop(t){
-    const k=Math.min(1,(t-start)/ms),ease=1-Math.pow(1-k,3);
-    angle=from+(target-from)*ease;
-    if(k<1){requestAnimationFrame(loop)}else{cb&&cb()}
-  })(start);
-}
-
-/* ===== Persistencia / reset / countdown ===== */
-function restoreDaily(){
-  const today=todayKey(); const stored=localStorage.getItem('spin_date');
-  if(stored && stored!==today){
-    localStorage.removeItem('spin_done');
-    localStorage.removeItem('spin_prize');
-    localStorage.removeItem('spin_code');
-    localStorage.removeItem('spin_ts');
-    localStorage.setItem('spin_date',today);
-  } else if(!stored){ localStorage.setItem('spin_date',today) }
-}
-function restorePrizeIfAny(){
-  const done=localStorage.getItem('spin_done')==='1'; const saved=localStorage.getItem('spin_prize');
-  if(done && saved){
-    const p=JSON.parse(saved);
-    const code = localStorage.getItem('spin_code') || '—';
-    const ts   = localStorage.getItem('spin_ts')   || tsString();
-    badge.textContent=label(p);
-    title.textContent="🎉 ¡Premio obtenido!";
-    subtitle.innerHTML=subtitleHTML(p);
-    stampEl.textContent = `Código: ${code} · ${ts}`;
-    claimBtn.disabled=false; spinBtn.disabled=true;
-    const msg=whatsappText(label(p));
-    claimBtn.onclick=()=>location.href=`https://wa.me/${WP}?text=${encodeURIComponent(msg)}`;
-  }
-}
-function scheduleMidnightReset(){
-  const now=new Date(); const midnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,5,0);
-  setTimeout(()=>{localStorage.removeItem('spin_done');localStorage.removeItem('spin_prize');localStorage.removeItem('spin_code');localStorage.removeItem('spin_ts');localStorage.setItem('spin_date',todayKey());
-    spinBtn.disabled=false;badge.textContent='-';title.textContent='Tenés 1 giro disponible';
-    subtitle.innerHTML='Los premios se acreditan con tu <b>próxima carga mínima</b>.';stampEl.textContent='';}, midnight.getTime()-now.getTime());
-}
-function endOfDay(){const n=new Date();const end=new Date(n.getFullYear(),n.getMonth(),n.getDate(),23,59,0,0).getTime();
-  return end>Date.now()?end:new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,23,59,0,0).getTime()}
-function tickCountdown(){
-  const ms=endOfDay()-Date.now(); const total=Math.max(0,Math.floor(ms/1000));
-  const h=Math.floor(total/3600), m=Math.floor((total%3600)/60), s=total%60;
-  countdownEl.textContent=h>0?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  if(ms<=0){promoBox.classList.add('expired');spinBtn.disabled=true;title.textContent="⏱️ Oferta finalizada";
-    subtitle.innerHTML="Los giros promocionales se habilitan en la próxima ventana.";}
-}
-
-/* Confetti */
-function confettiBurst(){
-  confetti.innerHTML='';
-  const n = 28;
-  for(let i=0;i<n;i++){
-    const p=document.createElement('i');
-    p.style.left = (Math.random()*100)+'vw';
-    p.style.animationDelay = (Math.random()*0.5)+'s';
-    p.style.background = Math.random()<.5
-      ? 'linear-gradient(#80ffea,#4e9cff)'
-      : 'linear-gradient(#ffd166,#ff3d7f)';
-    confetti.appendChild(p);
-  }
-  setTimeout(()=>{confetti.innerHTML='';}, 1800);
-}
-
-/* ===== Spin ===== */
-let stopTicks=null;
-document.addEventListener('click',()=>AudioKit.unlock(),{once:true}); // desbloqueo audio
-
-spinBtn.addEventListener('click', async ()=>{
-  if(spinning) return;
-  if(localStorage.getItem('spin_done')==='1'){ alert("Ya usaste tu giro de hoy"); return; }
-
-  spinning=true; spinBtn.disabled=true;
-  AudioKit.unlock();
-  if(soundOn){ stopTicks = AudioKit.spinStart(); }
-
-  const extra=5+Math.random()*1.5, offset=Math.random()*Math.PI*2, final=angle+(Math.PI*2*extra)+offset;
-
-  animateTo(final, 3000, async ()=>{
-    angle=final;
-    const idx=winnerIndexByAngle(angle); const prize=PRIZES[idx];
-    const prizeLabel = label(prize);
-
-    // generar y persistir código + timestamp
-    const code = await makeClaimCode(prizeLabel);
-    const ts   = tsString(new Date());
-    localStorage.setItem('spin_code', code);
-    localStorage.setItem('spin_ts', ts);
-
-    // pintar UI
-    badge.textContent=prizeLabel;
-    title.textContent="🎉 ¡Premio obtenido!";
-    subtitle.innerHTML=subtitleHTML(prize);
-    stampEl.textContent = `Código: ${code} · ${ts}`;
-
-    // WhatsApp
-    const msg = whatsappText(prizeLabel);
-    claimBtn.disabled=false;
-    claimBtn.onclick=()=>location.href=`https://wa.me/${WP}?text=${encodeURIComponent(msg)}`;
-
-    // persistencia de giro
-    localStorage.setItem('spin_done','1');
-    localStorage.setItem('spin_prize',JSON.stringify(prize));
-    localStorage.setItem('spin_date',todayKey());
-
-    if(soundOn){ if(stopTicks) stopTicks(); AudioKit.win(); }
-    confettiBurst();
-    spinning=false;
-  });
+document.addEventListener("click", ()=>AudioKit.unlock(), {once:true});
+soundToggle.addEventListener("click", ()=>{
+  soundOn=!soundOn;
+  soundState.textContent = soundOn ? "ON" : "OFF";
 });
 
-/* ===== Init ===== */
-function init(){
-  setSize(); restoreDaily(); restorePrizeIfAny(); tickCountdown();
-  setInterval(tickCountdown,1000);
-  scheduleMidnightReset();
+/* ==========================================================
+   Generate / Claim / Modal
+   ========================================================== */
+const btnGenerate = document.getElementById("btnGenerate");
+const btnClaim = document.getElementById("btnClaim");
+const headerClaim = document.getElementById("headerClaim");
+
+const codeLabel = document.getElementById("codeLabel");
+const tsLabel = document.getElementById("tsLabel");
+
+const modal = document.getElementById("modal");
+const mClose = document.getElementById("mClose");
+const mBenefit = document.getElementById("mBenefit");
+const mMin = document.getElementById("mMin");
+const mCode = document.getElementById("mCode");
+const mTs = document.getElementById("mTs");
+const mWa = document.getElementById("mWa");
+
+function openModal(){ modal.classList.add("show"); }
+function closeModal(){ modal.classList.remove("show"); }
+mClose.onclick = closeModal;
+modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
+
+function buildMessage(payload){
+  const name = USER ? ` ${USER}` : "";
+  return [
+    `Hola${name}, te habla BET300 👋`,
+    `Te activé un Beneficio Progresivo: +${payload.pct}% con carga mínima ${money(payload.min)}.`,
+    `Código: ${payload.code} · ${payload.ts}`,
+    `Link: ${ENTER_URL}`
+  ].join("\n");
 }
-init();
+
+function doWA(payload){
+  if(!WP){
+    alert("WhatsApp no configurado para esta PC (dejé genérico). Luego completás WP_NUMBERS.");
+    return;
+  }
+  const msg = buildMessage(payload);
+  location.href = `https://wa.me/${WP}?text=${encodeURIComponent(msg)}`;
+}
+
+function setPayloadUI(payload){
+  codeLabel.textContent = payload.code;
+  tsLabel.textContent = payload.ts;
+
+  mBenefit.textContent = `+${payload.pct}%`;
+  mMin.textContent = money(payload.min);
+  mCode.textContent = payload.code;
+  mTs.textContent = payload.ts;
+
+  btnClaim.disabled = false;
+  btnClaim.onclick = ()=> doWA(payload);
+  headerClaim.onclick = ()=> doWA(payload);
+  mWa.onclick = ()=> doWA(payload);
+}
+
+function restoreIfAny(){
+  const done = localStorage.getItem("benefit_done")==="1";
+  const raw = localStorage.getItem("benefit_payload");
+  if(done && raw){
+    try{
+      const payload = JSON.parse(raw);
+      setPayloadUI(payload);
+      document.getElementById("luxTag").textContent = "✅ Chance usada hoy";
+    }catch{}
+  }
+}
+restoreIfAny();
+
+btnGenerate.addEventListener("click", async ()=>{
+  if(localStorage.getItem("benefit_done")==="1"){
+    if(soundOn) AudioKit.no();
+    toast("Ya usaste tu chance de hoy");
+    openModalAlreadyUsed();
+    return;
+  }
+
+  const item = SCALE[selectedIndex-1];
+  const code = await makeCode(item.min, item.pct);
+  const ts = tsString(new Date());
+
+  const payload = {min:item.min, pct:item.pct, code, ts, pc:pcMatch, user: USER || ""};
+
+  localStorage.setItem("benefit_done","1");
+  localStorage.setItem("benefit_payload", JSON.stringify(payload));
+
+  document.getElementById("luxTag").textContent = "✅ Chance usada hoy";
+  if(soundOn) AudioKit.ok();
+
+  setPayloadUI(payload);
+  openModal();
+});
+
+function openModalAlreadyUsed(){
+  const raw = localStorage.getItem("benefit_payload");
+  if(raw){
+    try{
+      const payload = JSON.parse(raw);
+      setPayloadUI(payload);
+      openModal();
+      return;
+    }catch{}
+  }
+  alert("Ya usaste tu chance de hoy.");
+}
+
+/* ==========================================================
+   Countdown hasta fin del día
+   ========================================================== */
+function endOfDay(){
+  const n=new Date();
+  return new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23,59,0,0).getTime();
+}
+function tickCountdown(){
+  const ms = endOfDay() - Date.now();
+  const total = Math.max(0, Math.floor(ms/1000));
+  const h=Math.floor(total/3600), m=Math.floor((total%3600)/60), s=total%60;
+  document.getElementById("countdown").textContent =
+    h>0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` :
+          `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+tickCountdown();
+setInterval(tickCountdown, 1000);
+
+/* ==========================================================
+   Toast
+   ========================================================== */
+const toastEl = document.getElementById("toast");
+let toastTO=null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTO);
+  toastTO = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+}
+
+/* ==========================================================
+   Partículas premium (sutiles)
+   ========================================================== */
+(function particles(){
+  const c = document.getElementById("fx");
+  const ctx = c.getContext("2d");
+  const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+  let W=0,H=0, pts=[];
+  function resize(){
+    W = Math.floor(innerWidth * DPR);
+    H = Math.floor(innerHeight * DPR);
+    c.width = W; c.height = H;
+    pts = Array.from({length: 88}, ()=>({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      r: (Math.random()*1.7 + 0.45)*DPR,
+      a: Math.random()*0.33 + 0.08,
+      vx: (Math.random()*0.22 + 0.05)*DPR,
+      vy: (Math.random()*0.18 + 0.04)*DPR
+    }));
+  }
+  resize();
+  addEventListener("resize", ()=>{
+    clearTimeout(window.__pTo);
+    window.__pTo = setTimeout(resize, 140);
+  });
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    const g1 = ctx.createRadialGradient(W*0.22,H*0.08,0, W*0.22,H*0.08, Math.max(W,H)*0.7);
+    g1.addColorStop(0, "rgba(255,45,45,.10)");
+    g1.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+
+    const g2 = ctx.createRadialGradient(W*0.88,H*0.10,0, W*0.88,H*0.10, Math.max(W,H)*0.65);
+    g2.addColorStop(0, "rgba(245,211,123,.08)");
+    g2.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g2; ctx.fillRect(0,0,W,H);
+
+    for(const p of pts){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x>W+20) p.x=-20;
+      if(p.y>H+20) p.y=-20;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(245,211,123,${p.a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 </script>
 </body>
 </html>
